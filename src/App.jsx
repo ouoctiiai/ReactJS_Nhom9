@@ -1,5 +1,6 @@
 import { Search } from 'lucide-react'
 import './App.css'
+import Footer from './Components/Footer/Foot'
 
 function App() {
 
@@ -11,7 +12,9 @@ function App() {
           <Search/>
         </div>
       </h1>
+      <Footer />
     </>
+
   )
 }
 
