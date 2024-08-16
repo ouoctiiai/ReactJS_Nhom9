@@ -7,6 +7,7 @@ import './index.css';
 import './App.css'
 import Header from './Components/Header';
 import MainBody from './Components/MainBody/MainBody'
+import Footer from './Components/Footer/Foot'
 
 function App() {
   return (
@@ -16,7 +17,9 @@ function App() {
       <div >
         <MainBody/>
       </div>
-      <div>Footer</div>
+      <div>
+      <Footer />
+      </div>
       </div>      
       <AddQuestionCard />
     </>
