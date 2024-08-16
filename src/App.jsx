@@ -1,16 +1,11 @@
-import { Search } from 'lucide-react'
-import './App.css'
+import React from 'react'
+import './App.css';
+import AddQuestionCard from './Components/addQuestionCard';
 
 function App() {
-
   return (
-    <>
-      <h1 className="text-3xl font-bold underline">
-        Hello world!
-        <div>
-          <Search/>
-        </div>
-      </h1>
+    <>  
+      <AddQuestionCard />
     </>
   )
 }
