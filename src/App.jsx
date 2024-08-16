@@ -5,7 +5,14 @@ import AddQuestionCard from './Components/addQuestionCard';
 function App() {
   return (
     <>  
-      <AddQuestionCard />
+      <div >
+        <Header/>
+        <div>
+          <MainBody/>
+          <AddQuestionCard />
+        </div>
+        <Footer />
+      </div>  
     </>
   )
 }
