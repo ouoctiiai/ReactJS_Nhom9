@@ -14,14 +14,12 @@ function App() {
     <>  
       <div >
         <Header/>
-      <div >
-        <MainBody/>
-      </div>
-      <div>
-      <Footer />
-      </div>
-      </div>      
-      <AddQuestionCard />
+        <div>
+          <MainBody/>
+          <AddQuestionCard />
+        </div>
+        <Footer />
+      </div>  
     </>
   )
 }
