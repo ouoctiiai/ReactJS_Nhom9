@@ -1,5 +1,6 @@
 import { Search } from 'lucide-react'
 import './App.css'
+import MainBody from './Components/MainBody/MainBody'
 
 function App() {
 
@@ -8,9 +9,11 @@ function App() {
       <h1 className="text-3xl font-bold underline">
         Hello world!
         <div>
-          <Search/>
+          <Search />
+
         </div>
       </h1>
+      <MainBody/>
     </>
   )
 }
