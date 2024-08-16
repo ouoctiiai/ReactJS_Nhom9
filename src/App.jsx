@@ -1,18 +1,21 @@
-import { Search } from 'lucide-react'
+import { useState } from 'react'
+import reactLogo from './assets/react.svg'
+import viteLogo from '/vite.svg'
+import './index.css';
 import './App.css'
-
+import Header from './Components/Header';
 function App() {
 
   return (
-    <>
-      <h1 className="text-3xl font-bold underline">
-        Hello world!
-        <div>
-          <Search/>
-        </div>
-      </h1>
-    </>
+    <div >
+        <Header/>
+      <div >
+        content
+      </div>
+      <div>Footer</div>
+    </div>
   )
 }
 
 export default App
+
