@@ -6,6 +6,7 @@ import viteLogo from '/vite.svg'
 import './index.css';
 import './App.css'
 import Header from './Components/Header';
+import MainBody from './Components/MainBody/MainBody'
 
 function App() {
   return (
@@ -13,7 +14,7 @@ function App() {
       <div >
         <Header/>
       <div >
-        content
+        <MainBody/>
       </div>
       <div>Footer</div>
       </div>      
