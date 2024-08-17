@@ -51,7 +51,7 @@ const items = [
 
 const Footer = () => {
   return (
-    <div className="footer-container">
+    <div className="footer-container text-sm">
       <div className="footer-content">
         {
           sections.map((section, index) => (

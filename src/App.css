@@ -8,3 +8,15 @@ body, html {
   margin: 0;
   padding: 0;
 }
+.no-scrollbar {
+  overflow: hidden;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

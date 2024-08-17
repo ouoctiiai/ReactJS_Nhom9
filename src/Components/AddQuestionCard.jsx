@@ -2,7 +2,7 @@ import React from 'react'
 
 const AddQuestionCard = () => {
   return (
-      <div className="card bg-light">
+      <div className="card bg-light ">
         <div className="card-body">
           <h5 className="card-title">Tạo câu hỏi mới</h5>
           <p className="card-text">Hãy đặt những câu hỏi liên quan đến vấn đề thực tập.</p>

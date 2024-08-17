@@ -8,9 +8,9 @@ import React from "react";
 
 export default function Header() {
   return (
-    <div className="px-10 py-4 flex items-center justify-between bg-slate-500">
+    <div className="px-10 py-4 h-24 flex items-center justify-between bg-slate-400">
       <div className="flex items-center gap-4">
-        <div>
+        <div className="h-20 w-18 ">
           <img src="./image/logo.jpg" />
         </div>
       </div>
