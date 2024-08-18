@@ -8,18 +8,20 @@ import './App.css'
 import Header from './Components/Header';
 import MainBody from './Components/MainBody/MainBody'
 import Footer from './Components/Footer/Foot'
+import Login from './Components/Signin-Login/Login';
 
 function App() {
   return (
-    <>  
-      <div >
-        <Header/>
+    <>
+      {/* <div >
+        <Header />
         <div>
-          <MainBody/>
+          <MainBody />
           <AddQuestionCard />
         </div>
         <Footer />
-      </div>  
+      </div> */}
+      <Login/>
     </>
   )
 }
