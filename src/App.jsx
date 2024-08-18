@@ -11,7 +11,7 @@ import MainBody from './Components/MainBody/MainBody';
 function App() {
   const [posts, setPosts] = useState([])
   useEffect(() => {
-    fetch("https://66c075a5ba6f27ca9a56aed0.mockapi.io/questions")
+    fetch("https://66c21aecf83fffcb587b2a9c.mockapi.io/questions/posts")
       .then(response => response.json())
       .then(data => setPosts(data))
   }, [])
