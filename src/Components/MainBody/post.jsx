@@ -1,13 +1,15 @@
 import React, { useState }  from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Trash2, Heart, Brush } from 'lucide-react';
+import { Trash2, Heart, Brush, MessageCircleReply  } from 'lucide-react';
 import './MainBody.css';
 import UpdateQuestionCard from './UpdateQuestionCard';
+import AnswerCard from './AnswerCard';
 
 export default function Post({ post, onDeletePost }) {
     const [likes, setLikes] = useState(post.likes ?? []); 
     const [hasLiked, setHasLiked] = useState(post.likes?.includes('andanh') ?? false); 
     const [showUpdateCard, setShowUpdateCard] = useState(false); 
+    const [showAnswerCard, setShowAnswerCard] = useState(false); 
 
     const handleUpdateClick = () => {
         setShowUpdateCard(true); 
@@ -15,6 +17,14 @@ export default function Post({ post, onDeletePost }) {
 
     const handleCloseUpdateCard = () => {
         setShowUpdateCard(false); 
+      };
+
+      const handleAnswerClick = () => {
+        setShowAnswerCard(true); 
+    };
+
+    const handleCloseAnswerCard = () => {
+        setShowAnswerCard(false); 
       };
     
     const handleLikeClick = async () => {
@@ -79,11 +89,20 @@ export default function Post({ post, onDeletePost }) {
                 <button type="button" onClick={handleUpdateClick}>
                     <Brush />
                 </button>
+                <button type="button" onClick={handleAnswerClick}>
+                    <MessageCircleReply />
+                </button>
             </div>
             {showUpdateCard && (
                 <UpdateQuestionCard
                     post={post} 
                     onClose={handleCloseUpdateCard} 
+                />
+            )}
+            {showAnswerCard && (
+                <AnswerCard
+                    post={post} 
+                    onClose={handleCloseAnswerCard} 
                 />
             )}
         </div>

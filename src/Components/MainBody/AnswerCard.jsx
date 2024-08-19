@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 
-const UpdateQuestionCard = ({ post, onClose }) => {
+const AnswerCard = ({ post, onClose }) => {
 
     const [formData, setFormData] = useState({
-        question: post.question,
+        answer: post.answer,
       });
     
     const handleChange = (event) => {
@@ -16,15 +16,15 @@ const UpdateQuestionCard = ({ post, onClose }) => {
           const response = await fetch(`https://66c21aecf83fffcb587b2a9c.mockapi.io/questions/posts/${post.id}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ ...post, question: formData.question }),
+            body: JSON.stringify({ ...post, answer: formData.answer }),
           });
     
           if (!response.ok) {
             throw new Error(`Error updating post: ${response.statusText}`);
           }
 
-          console.log('Post updated successfully!');
-          alert('Post updated successfully!');
+          console.log('Post answered successfully!');
+          alert('Post answered successfully!!');
           onClose();
         } catch (error) {
           console.error('Error updating post:', error);
@@ -48,16 +48,16 @@ const UpdateQuestionCard = ({ post, onClose }) => {
             </div>
           </div>
           <div className="mb-3">
-            <label className="small mb-1" htmlFor="inputQuestion">Question: </label>
-            <input className="form-control" id="inputQuestion" type="text" placeholder="Enter your question" name="question" value={formData.question} onChange={handleChange} />
+            <label className="small mb-1" htmlFor="inputAnswer">question: </label>
+            <input className="form-control" id="inputAnswer" type="text" value={post.question} disabled />
           </div>
           <div className="mb-3">
-            <label className="small mb-1" htmlFor="inputAnswer">Answer: </label>
-            <input className="form-control" id="inputAnswer" type="text" value={post.answer} disabled />
+            <label className="small mb-1" htmlFor="inputanswer">answer: </label>
+            <input className="form-control" id="inputanswer" type="text" placeholder="Enter your answer" name="answer" value={formData.answer} onChange={handleChange} />
           </div>
           <div className="d-grid gap-2 d-md-flex flex justify-between mt-3">
             <button className="btn btn-primary me-md-2" type="button" onClick={onClose}>Hủy</button>
-            <button className="btn btn-primary" type="submit">Save changes</button>
+            <button className="btn btn-primary" type="submit">Lưu</button>
           </div>
         </form>
       </div>
@@ -65,4 +65,4 @@ const UpdateQuestionCard = ({ post, onClose }) => {
   );
 };
 
-export default UpdateQuestionCard;
+export default AnswerCard;
