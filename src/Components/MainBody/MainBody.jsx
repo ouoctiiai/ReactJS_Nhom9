@@ -33,17 +33,53 @@ export default function MainBody() {
     }
   };
 
+  const handleInsertPost = async (question) => {
+    if (!question) {
+      alert('Vui lòng nhập câu hỏi.');
+      return;
+    }
+  
+    const newQuestion = {
+      question: question,
+      likes: [],
+      answer: '',
+    };
+  
+    try {
+      const response = await fetch('https://66c21aecf83fffcb587b2a9c.mockapi.io/questions/posts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newQuestion),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Error');
+      }
+      console.log('Post inserted successfully!');
+      alert('Post inserted successfully!');
+      
+      const updatedPostsResponse = await fetch("https://66c21aecf83fffcb587b2a9c.mockapi.io/questions/posts");
+      const updatedPosts = await updatedPostsResponse.json();
+
+      setPosts(updatedPosts);
+
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Error');
+    }
+  };
+
   return (
       <div className="flex flex-col justify-center items-start  overflow-hidden">
         <h1 className=' text-white ml-2'>Questions for the group?</h1>
           <div className='grid grid-cols-4 gap-4 ml-[10%] mt-4 w-[80%] h-[500px] overflow-y-scroll no-scrollbar'>
             {posts.map((post) => (
-              <Post key={post.id} post={post} onDeletePost={handleDeletePost} />
+              <Post key={post.id} post={post} onDeletePost={handleDeletePost}/>
             ))}          
           </div>
           <div className='flex justify-between flex-col items-center w-screen mb-2'>
             <h2 className='text-white'>Have new question* </h2>
-              <AddQuestionCard />
+              <AddQuestionCard onInsertPost={handleInsertPost}/>
           </div>
     </div>
     

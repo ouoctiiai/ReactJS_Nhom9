@@ -1,42 +1,10 @@
 import React, { useState } from 'react';
 
-const AddQuestionCard = () => {
+const AddQuestionCard = ({onInsertPost}) => {
   const [question, setQuestion] = useState('');
 
   const handleCancel = () => {
     setQuestion('');
-  };
-
-  const handleSubmit = async () => {
-    if (!question) {
-      alert('Vui lòng nhập câu hỏi.');
-      return;
-    }
-
-    const newQuestion = {
-      question,
-      likes: [],
-      answer: '',
-    };
-
-    try {
-      const response = await fetch('https://66c21aecf83fffcb587b2a9c.mockapi.io/questions/posts', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(newQuestion),
-      });
-
-      if (!response.ok) {
-        throw new Error('Error!');
-      }
-
-      console.log('Post inserted successfully!');
-      alert('Post inserted successfully!');
-      setQuestion('');
-    } catch (error) {
-      console.error('Error:', error);
-      alert('Error!');
-    }
   };
 
   return (
@@ -50,7 +18,7 @@ const AddQuestionCard = () => {
         </div>
         <div className="d-grid gap-2 d-md-flex justify-content-md-end mt-3">
           <button className="btn btn-primary me-md-2" type="button" onClick={handleCancel}>Hủy</button>
-          <button className="btn btn-primary" type="button" onClick={handleSubmit}>Gửi</button>
+          <button className="btn btn-primary" type="button" onClick={() => onInsertPost(question)}>Gửi</button>
         </div>
       </div>
     </div>

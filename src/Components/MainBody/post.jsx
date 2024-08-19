@@ -1,4 +1,3 @@
-
 import React, { useState }  from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Trash2, Heart, Brush } from 'lucide-react';
@@ -47,7 +46,6 @@ export default function Post({ post, onDeletePost }) {
                 throw new Error(`Error updating likes: ${response.statusText}`);
             }
 
-            // Cập nhật số lượt thích và trạng thái thích cục bộ sau khi thành công
             setLikes(newLikes);
             setHasLiked(!liked);
 
@@ -77,7 +75,7 @@ export default function Post({ post, onDeletePost }) {
                 <button type="button" onClick={handleLikeClick} style={{ background: 'none', border: 'none' }}>
                     <Heart style={{ color: hasLiked ? 'red' : 'gray' }} />
                 </button>
-                {likes.length} {/* Hiển thị số lượt thích */}
+                {likes.length} 
                 <button type="button" onClick={handleUpdateClick}>
                     <Brush />
                 </button>
