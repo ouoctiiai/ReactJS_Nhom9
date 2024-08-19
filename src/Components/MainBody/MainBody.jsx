@@ -1,14 +1,45 @@
-import React from 'react'
+import React, { useState , useEffect} from 'react'
 import Post from './post'
-import AddQuestionCard from '../addQuestionCard'
-import UpdateQuestionCard from '../UpdateQuestionCard'
+import AddQuestionCard from './AddQuestionCard'
+export default function MainBody() {
 
-export default function MainBody({posts = []}) {
+  const [posts, setPosts] = useState([])
+  useEffect(() => {
+    fetch("https://66c21aecf83fffcb587b2a9c.mockapi.io/questions/posts")
+      .then(response => response.json())
+      .then(data => setPosts(data))
+  }, [])
+
+  const handleDeletePost = async (postId) => {
+    if (!window.confirm(`Are you sure you want to delete this question?`)) {
+      return;
+    }
+    try {
+      const response = await fetch(`https://66c21aecf83fffcb587b2a9c.mockapi.io/questions/posts/${postId}`, {
+        method: 'DELETE',
+      });
+  
+      if (!response.ok) {
+        throw new Error(`Error deleting post: ${response.statusText}`);
+      }
+  
+      console.log('Post deleted successfully!');
+      alert('Post deleted successfully');
+  
+      setPosts(posts.filter((post) => post.id !== postId));
+    } catch (error) {
+      console.error('Error deleting post:', error);
+      alert('An error occurred while deleting the post. Please try again later.');
+    }
+  };
+
   return (
       <div className="flex flex-col justify-center items-start  overflow-hidden">
         <h1 className=' text-white ml-2'>Questions for the group?</h1>
           <div className='grid grid-cols-4 gap-4 ml-[10%] mt-4 w-[80%] h-[500px] overflow-y-scroll no-scrollbar'>
-            { posts.map(post => <Post key={post.id} post={post} />) }
+            {posts.map((post) => (
+              <Post key={post.id} post={post} onDeletePost={handleDeletePost} />
+            ))}          
           </div>
           <div className='flex justify-between flex-col items-center w-screen mb-2'>
             <h2 className='text-white'>Have new question* </h2>
