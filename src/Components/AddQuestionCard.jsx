@@ -41,7 +41,7 @@ const AddQuestionCard = () => {
   return (
     <div className="card bg-light">
       <div className="card-body">
-      <div class="card-header">Ask questions</div>
+      <div className="card-header">Ask questions</div>
       <p className="card-text">Hãy đặt những câu hỏi liên quan đến vấn đề thực tập.</p>
         <div className="form-floating">
           <input className="form-control" id="question" placeholder="Enter the question" value={question} onChange={(e) => setQuestion(e.target.value)} />
