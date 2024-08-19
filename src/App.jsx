@@ -9,19 +9,12 @@ import Footer from './Components/Footer/Foot'
 import MainBody from './Components/MainBody/MainBody';
 
 function App() {
-  const [posts, setPosts] = useState([])
-  useEffect(() => {
-    fetch("https://66c21aecf83fffcb587b2a9c.mockapi.io/questions/posts")
-      .then(response => response.json())
-      .then(data => setPosts(data))
-  }, [])
   return (
     <>  
       <div >
         <Header/>
         <div className=" bg-[url('./image/bg.jpg')]  bg-cover bg-center">
-         <MainBody posts = {posts}/>
-          
+         <MainBody/>
         </div>
         <Footer />
       </div>  

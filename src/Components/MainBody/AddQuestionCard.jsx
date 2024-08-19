@@ -27,14 +27,15 @@ const AddQuestionCard = () => {
       });
 
       if (!response.ok) {
-        throw new Error('Đã xảy ra lỗi khi thêm câu hỏi.');
+        throw new Error('Error!');
       }
 
-      console.log('Câu hỏi đã được thêm thành công!');
+      console.log('Post inserted successfully!');
+      alert('Post inserted successfully!');
       setQuestion('');
     } catch (error) {
-      console.error('Lỗi:', error);
-      alert('Đã xảy ra lỗi khi thêm câu hỏi. Vui lòng thử lại.');
+      console.error('Error:', error);
+      alert('Error!');
     }
   };
 
