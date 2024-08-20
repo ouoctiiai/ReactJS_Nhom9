@@ -29,7 +29,6 @@ function App() {
         <Header onSearch = {handleSearch}/>
         <Navbar />
         <div className=" bg-[url('./image/bg.jpg')]  bg-cover bg-center">
-         <MainBody/>
           <Routes>
             <Route path="/filterquestion" element={<FilterQuestion questions={posts}/>} />
              <Route path="/" element={<MainBody posts={posts} searchQuery={searchQuery} />} /> 

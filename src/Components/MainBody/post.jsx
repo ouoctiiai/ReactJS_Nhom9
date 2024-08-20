@@ -1,6 +1,6 @@
 import React, { useState }  from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Trash2, Heart, Brush, MessageCircleReply, User } from 'lucide-react';
+import { Trash2, Heart, Brush, MessageCircleReply, User  } from 'lucide-react';
 import './MainBody.css';
 import UpdateQuestionCard from './UpdateQuestionCard';
 import AnswerCard from './AnswerCard';
@@ -44,7 +44,7 @@ export default function Post({ post, onDeletePost }) {
 
         try {
             // Cập nhật số lượt thích trên server
-            const response = await fetch(`https://66c21aecf83fffcb587b2a9c.mockapi.io/questions/posts/${post.id}`, {
+            const response = await fetch(`https://66c075a5ba6f27ca9a56aed0.mockapi.io/questions/${post.id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -75,7 +75,7 @@ export default function Post({ post, onDeletePost }) {
                 </svg>
                 
                 <div className='flex gap-2'>
-                  <User /><h5>{post.writer.toUpperCase()}</h5>
+                  <User /><h5>{post.writer}</h5>
                 </div>
                 <i>{post.date}</i>
                 </div>

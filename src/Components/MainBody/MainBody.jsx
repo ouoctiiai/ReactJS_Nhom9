@@ -1,21 +1,27 @@
 import React, { useEffect, useState } from 'react'
 import Post from './post'
 import AddQuestionCard from './AddQuestionCard'
-export default function MainBody() {
 
-  const [posts, setPosts] = useState([])
+export default function MainBody({ posts = [], searchQuery }) {
+  const [filteredPosts, setFilteredPosts] = useState(posts);
+  
   useEffect(() => {
-    fetch("https://66c21aecf83fffcb587b2a9c.mockapi.io/questions/posts")
-      .then(response => response.json())
-      .then(data => setPosts(data))
-  }, [])
+    if (searchQuery.trim() === '') {
+      setFilteredPosts(posts);
+    } else {
+      const filtered = posts.filter(post =>
+        post.question.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      setFilteredPosts(filtered);
+    }
+  }, [posts, searchQuery]);
 
   const handleDeletePost = async (postId) => {
     if (!window.confirm(`Are you sure you want to delete this question?`)) {
       return;
     }
     try {
-      const response = await fetch(`https://66c21aecf83fffcb587b2a9c.mockapi.io/questions/posts/${postId}`, {
+      const response = await fetch(`https://66c075a5ba6f27ca9a56aed0.mockapi.io/questions/${postId}`, {
         method: 'DELETE',
       });
   
@@ -26,7 +32,9 @@ export default function MainBody() {
       console.log('Post deleted successfully!');
       alert('Post deleted successfully');
   
-      setPosts(posts.filter((post) => post.id !== postId));
+      setFilteredPosts((prevFilteredPosts) =>
+        prevFilteredPosts.filter((post) => post.id !== postId)
+      );
     } catch (error) {
       console.error('Error deleting post:', error);
       alert('An error occurred while deleting the post. Please try again later.');
@@ -43,10 +51,12 @@ export default function MainBody() {
       question: question,
       likes: [],
       answer: '',
+      writer: 'andanh',
+      date: new Date().toLocaleDateString(),
     };
   
     try {
-      const response = await fetch('https://66c21aecf83fffcb587b2a9c.mockapi.io/questions/posts', {
+      const response = await fetch('https://66c075a5ba6f27ca9a56aed0.mockapi.io/questions', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newQuestion),
@@ -58,33 +68,19 @@ export default function MainBody() {
       console.log('Post inserted successfully!');
       alert('Post inserted successfully!');
       
-      const updatedPostsResponse = await fetch("https://66c21aecf83fffcb587b2a9c.mockapi.io/questions/posts");
-      const updatedPosts = await updatedPostsResponse.json();
-
-      setPosts(updatedPosts);
+      if (searchQuery.trim() === '' || newQuestion.question.toLowerCase().includes(searchQuery.toLowerCase())) {
+        setFilteredPosts((prevFilteredPosts) => [...prevFilteredPosts, newQuestion]);
+      }
 
     } catch (error) {
       console.error('Error:', error);
       alert('Error');
     }
   };
-}
 
-export default function MainBody({ posts = [], searchQuery }) {
-  const [filteredPosts, setFilteredPosts] = useState(posts);
-  useEffect(() => {
-    if (searchQuery.trim() === '') {
-      setFilteredPosts(posts);
-    } else {
-      const filtered = posts.filter(post =>
-        post.question.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-      setFilteredPosts(filtered);
-    }
-  }, [posts, searchQuery]);
   return (
     <div className="flex flex-col justify-center items-start  overflow-hidden bg-[url('./image/bg.jpg')]  bg-cover bg-center">
-        <h1 className=' text-white ml-2'>Questions for the group?</h1>          
+        <h1 className=' text-white ml-2'>Questions for the group?</h1>         
       <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 ml-[10%] mt-4 w-[80%] h-[500px] overflow-y-scroll no-scrollbar'>
             { filteredPosts.map(post => <Post key={post.id} post={post} onDeletePost={handleDeletePost}/>) }
           </div>
@@ -96,3 +92,4 @@ export default function MainBody({ posts = [], searchQuery }) {
     
   )
 }
+
