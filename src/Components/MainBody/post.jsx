@@ -10,6 +10,20 @@ export default function Post({ post, onDeletePost }) {
     const [hasLiked, setHasLiked] = useState(post.likes?.includes('andanh') ?? false); 
     const [showUpdateCard, setShowUpdateCard] = useState(false); 
     const [showAnswerCard, setShowAnswerCard] = useState(false); 
+    const [data, setData] = useState(post);
+
+
+    const handleUpdateDataQS = (question) => {
+        const newData = { ...data };
+        newData.question = question;
+        setData(newData);
+    }
+
+    const handleUpdateDataAS = (answer) => {
+        const newData = { ...data };
+        newData.answer = answer;
+        setData(newData);
+    }
 
     const handleUpdateClick = () => {
         setShowUpdateCard(true); 
@@ -75,19 +89,19 @@ export default function Post({ post, onDeletePost }) {
                 </svg>
                 
                 <div className='flex gap-2'>
-                  <User /><h5>{post.writer}</h5>
+                  <User /><h5>{data.writer}</h5>
                 </div>
-                <i>{post.date}</i>
+                <i>{data.date}</i>
                 </div>
                     
-                    <button type="button" onClick={() => onDeletePost(post.id)}>
+                    <button type="button" onClick={() => onDeletePost(data.id)}>
                         <Trash2 />
                     </button>
                </div>
                
                <h2>...............</h2>
             <div className="card-body">
-                <h5 className="card-title">{post.question}</h5>
+                <h5 className="card-title">{data.question}</h5>
             </div>
             <div className="card-footer flex gap-2" style={{ color: 'white' }}>
                 <button type="button" onClick={handleLikeClick} style={{ background: 'none', border: 'none' }}>
@@ -105,12 +119,14 @@ export default function Post({ post, onDeletePost }) {
                 <UpdateQuestionCard
                     post={post} 
                     onClose={handleCloseUpdateCard} 
+                    onUpdate={handleUpdateDataQS}
                 />
             )}
             {showAnswerCard && (
                 <AnswerCard
                     post={post} 
                     onClose={handleCloseAnswerCard} 
+                    onUpdate={handleUpdateDataAS}
                 />
             )}
         </div>

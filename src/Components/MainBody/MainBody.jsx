@@ -4,6 +4,7 @@ import AddQuestionCard from './AddQuestionCard'
 
 export default function MainBody({ posts = [], searchQuery }) {
   const [filteredPosts, setFilteredPosts] = useState(posts);
+  const [nextId, setNextId] = useState(null); 
   
   useEffect(() => {
     if (searchQuery.trim() === '') {
@@ -15,6 +16,26 @@ export default function MainBody({ posts = [], searchQuery }) {
       setFilteredPosts(filtered);
     }
   }, [posts, searchQuery]);
+
+  useEffect(() => {
+    const fetchNextId = async () => {
+      try {
+        const response = await fetch('https://66c075a5ba6f27ca9a56aed0.mockapi.io/questions');
+
+        if (!response.ok) {
+          throw new Error('Error fetching posts');
+        }
+
+        const data = await response.json();
+        const maxId = Math.max(...data.map(post => post.id));
+        setNextId(maxId + 1); 
+      } catch (error) {
+        console.error('Error fetching next ID:', error);
+      }
+    };
+
+    fetchNextId();
+  }, [posts]);
 
   const handleDeletePost = async (postId) => {
     if (!window.confirm(`Are you sure you want to delete this question?`)) {
@@ -48,6 +69,7 @@ export default function MainBody({ posts = [], searchQuery }) {
     }
   
     const newQuestion = {
+      id: nextId,
       question: question,
       likes: [],
       answer: '',
@@ -89,7 +111,6 @@ export default function MainBody({ posts = [], searchQuery }) {
               <AddQuestionCard onInsertPost={handleInsertPost}/>
           </div>
     </div>
-    
   )
 }
 

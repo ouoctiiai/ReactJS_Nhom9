@@ -1,19 +1,20 @@
 import React, { useState } from 'react';
 
-const UpdateQuestionCard = ({ post, onClose }) => {
+const UpdateQuestionCard = ({ post, onClose, onUpdate }) => {
 
     const [formData, setFormData] = useState({
         question: post.question,
       });
     
     const handleChange = (event) => {
-    setFormData({ ...formData, [event.target.name]: event.target.value });
+      setFormData({ ...formData, [event.target.name]: event.target.value });
     };
 
     const handleSave = async (event) => {
+      debugger;
         event.preventDefault();
             try {
-          const response = await fetch(`https://66c21aecf83fffcb587b2a9c.mockapi.io/questions/posts/${post.id}`, {
+          const response = await fetch(`https://66c075a5ba6f27ca9a56aed0.mockapi.io/questions/${post.id}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ ...post, question: formData.question }),
@@ -26,6 +27,7 @@ const UpdateQuestionCard = ({ post, onClose }) => {
           console.log('Post updated successfully!');
           alert('Post updated successfully!');
           onClose();
+          onUpdate(formData.question);
         } catch (error) {
           console.error('Error updating post:', error);
           alert('Error!');
