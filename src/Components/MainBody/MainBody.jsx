@@ -19,8 +19,6 @@ export const MainContainer = styled.div`
     margin-top: 20px
   }
   
-  
-  
   ul {
     display: flex;
     flex-wrap: wrap;
@@ -37,8 +35,8 @@ export const MainContainer = styled.div`
     color: #000;
     background: #ffc;
     display: block;
-    height: 10em;
-    width: 10em;
+    height: 13em;
+    width: 12em;
     padding: 1em;
     box-shadow: 5px 5px 7px rgba(33, 33, 33, .7);
     transform: rotate(-6deg);
@@ -69,57 +67,7 @@ export const MainContainer = styled.div`
     top: -10px;
   }
     
-  .pin-icon{
-    position: absolute;
-    top: 0;
-    left: 0;
-    margin: 5px
-  }
-    
-.icon-container {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    display: flex;
-    align-items: center;
-    margin: 5px;
-}
-    .heart-item{
-      margin-right: 5px;
-    }
-
-    .heart-quantity{
-      font-size: 16px;
-    }
-
-    .trash-icon{
-      position: absolute;
-      top: 0;
-      right: 0;
-      margin: 5px
-    }
-    
-    .dot-line{
-      position: absolute;
-      top: 15px;
-      width: 10px;
-      height: 10px;
-      background-color: black;
-      border-radius: 50%;
-      // box-shadow: 0 0 0 2px #999;
-    }
-    
-    .dot-line:nth-child(2){
-      left: 45px;
-    }
-
-    .dot-line:nth-child(3){
-      left: 75px;
-    }
-
-    .dot-line:nth-child(4){
-      left: 105px
-    }
+  
 `;
 
 const MainBody = () => {
@@ -194,7 +142,7 @@ const MainBody = () => {
   return (
     <MainContainer>
       <h3>Questions for the group?</h3>
-      <ul className='gap-4 overflow-y-scroll no-scrollbar'>
+      <ul className='pt-4 gap-4 overflow-y-scroll no-scrollbar'>
         {posts.map((post) => (
           <Post key={post.id} post={post} onDeletePost={handleDeletePost} />
         ))}

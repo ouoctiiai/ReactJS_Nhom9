@@ -10,8 +10,8 @@ const PostContainer = styled.li`
 
   .pin-icon{
     position: absolute;
-    top: 0;
-    left: 0;
+    top: -18px;
+    left: -15px;
     margin: 5px
   }
 
@@ -51,15 +51,15 @@ const PostContainer = styled.li`
     }
 
     .dot-line:nth-child(2){
-      left: 45px;
+      left: 60px;
     }
 
     .dot-line:nth-child(3){
-      left: 75px;
+      left: 90px;
     }
 
     .dot-line:nth-child(4){
-      left: 105px
+      left: 120px
     }
 `;
 
