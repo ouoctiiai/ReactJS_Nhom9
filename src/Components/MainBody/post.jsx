@@ -4,7 +4,7 @@ import { Trash2, Heart, Brush } from 'lucide-react';
 import styled from 'styled-components';
 import { FaHeart } from 'react-icons/fa';
 // import './MainBody.css';
-// import UpdateQuestionCard from './UpdateQuestionCard';
+import UpdateQuestionCard from './UpdateQuestionCard';
 
 const PostContainer = styled.li`
 
