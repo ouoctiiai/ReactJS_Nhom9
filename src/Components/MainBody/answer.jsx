@@ -3,12 +3,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Trash2, Heart, Brush, User, MessageCircleReply } from 'lucide-react';
 import styled from 'styled-components';
 import { FaHeart } from 'react-icons/fa';
-import AnswerCard from './AnswerCard';
-// import './MainBody.css';
-import UpdateQuestionCard from './UpdateQuestionCard';
 
 const PostContainer = styled.li`
-
 p {
     font-size: 1rem;
     font-weight: normal;
@@ -75,42 +71,28 @@ p {
     }
 `;
 
-export default function Post({ post, onDeletePost }) {
-    const [likes, setLikes] = useState(post.likes ?? []); 
-    const [hasLiked, setHasLiked] = useState(post.likes?.includes('andanh') ?? false); 
-    const [showUpdateCard, setShowUpdateCard] = useState(false); 
-    const [showAnswerCard, setShowAnswerCard] = useState(false); 
-    const [data, setData] = useState(post);
-
-
-    const handleUpdateDataQS = (question) => {
-        const newData = { ...data };
-        newData.question = question;
-        setData(newData);
-    }
-
-    const handleUpdateDataAS = (answer) => {
-        const newData = { ...data };
-        newData.answer = answer;
-        setData(newData);
-    }
+export default function Answer ({post, onDeletePost}) {
+    const [likes, setLikes] = useState(post.likes ?? []);
+    const [hasLiked, setHasLiked] = useState(post.likes?.includes('andanh') ?? false);
+    const [showUpdateCard, setShowUpdateCard] = useState(false);
+    const [showAnswerCard, setShowAnswerCard] = useState(false);
 
     const handleUpdateClick = () => {
-        setShowUpdateCard(true); 
+        setShowUpdateCard(true);
     };
 
     const handleCloseUpdateCard = () => {
-        setShowUpdateCard(false); 
-      };
+        setShowUpdateCard(false);
+    };
 
-      const handleAnswerClick = () => {
-        setShowAnswerCard(true); 
+    const handleAnswerClick = () => {
+        setShowAnswerCard(true);
     };
 
     const handleCloseAnswerCard = () => {
-        setShowAnswerCard(false); 
-      };
-    
+        setShowAnswerCard(false);
+    };
+
     const handleLikeClick = async () => {
         const newLikes = [...likes];
         const liked = hasLiked;
@@ -149,7 +131,7 @@ export default function Post({ post, onDeletePost }) {
             alert('An error occurred while updating likes. Please try again later.');
         }
     };
-
+    
     return (
         <PostContainer>
             <a>
@@ -159,15 +141,15 @@ export default function Post({ post, onDeletePost }) {
                     </svg>
                 </span>
                 <div className='flex gap-2'>
-                    <User /><h7>{data.writer}</h7>
+                    <User /><h7>{post.writer}</h7>
                 </div>
                 <span className='trash-icon'>
-                    <button onClick={() => onDeletePost(data.id)}>
+                    <button onClick={() => onDeletePost(post.id)}>
                         <Trash2 />
                     </button>
                 </span>
                 <hr style={{margin: '10px', border: '0.15px solid black', opacity: '.8'}}/>
-                <p>{data.question}</p>
+                <p style={{fontSize: '14px'}}>{post.answer}</p>
                 <div className='icon-container'>
                     <span className='heart-item'>
                         <button type="button" onClick={handleLikeClick} style={{ background: 'none', border: 'none' }}>
@@ -187,7 +169,7 @@ export default function Post({ post, onDeletePost }) {
                     </span>
                 </div>
                 <span className='date-text' style={{ fontSize: '12px' }}>
-                    <h7>{data.date}</h7>
+                    <h7>{post.date}</h7>
                 </span>
                 {showUpdateCard && (
                     <UpdateQuestionCard
@@ -200,10 +182,9 @@ export default function Post({ post, onDeletePost }) {
                     <AnswerCard
                         post={post}
                         onClose={handleCloseAnswerCard}
-                        onUpdate={handleUpdateDataAS}
                     />
                 )}
             </a>
         </PostContainer>
     );
-}
+};

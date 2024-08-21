@@ -1,6 +1,117 @@
-import React, { useEffect, useState } from 'react'
-import Post from './post'
-import AddQuestionCard from './AddQuestionCard'
+import React, { useEffect, useState } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import styled from 'styled-components';
+import { FaHeart } from 'react-icons/fa';
+import Post from './post';
+import { Trash2 } from 'lucide-react';
+import Answer from './answer';
+import AddQuestionCard from './AddQuestionCard';
+
+export const MainContainer = styled.div`
+  background-color: aliceblue;
+  
+  h2 {
+    font-weight: bold;
+    font-size: 2rem;
+  }
+  
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 1em
+  }
+    
+  ul,
+  li {
+    list-style: none;
+  }
+
+  ul li a {
+    text-decoration: none;
+    color: #000;
+    background: #ffc;
+    display: inline-block;
+    height: auto;
+    width: 12em;
+    padding: 1em;
+    box-shadow: 5px 5px 7px rgba(33, 33, 33, .7);
+    transform: rotate(-6deg);
+    transition: transform .15s linear;
+  }
+  
+  ul li {
+    margin: 1em;
+  }
+  
+  ul li:nth-child(even) a {
+    transform: rotate(4deg);
+    position: relative;
+    top: 5px;
+    background: #cfc;
+  }
+  
+  ul li:nth-child(3n) a {
+    transform: rotate(-3deg);
+    position: relative;
+    top: -5px;
+    background: #ccf;
+  }
+  
+  ul li:nth-child(5n) a {
+    transform: rotate(5deg);
+    position: relative;
+    top: -10px;
+  }
+`;
+
+const FlashcardContainer = styled.li`
+  position: relative;
+  width: 12em;
+  height: 13em;
+  perspective: 1000px;
+  margin: 1em;
+  z-index: 1;
+  transition: z-index 0.6s;
+
+  &:hover {
+    z-index: 2;
+  }
+`;
+
+const Flashcard = styled.div`
+ position: absolute;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+  transform: rotateY(0deg);
+
+  ${FlashcardContainer}:hover & {
+    transform: rotateY(180deg);
+  }
+`;
+
+const FlashcardFront = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #e0e0e0;
+  box-shadow: 5px 5px 7px rgba(33, 33, 33, .7);
+  padding: 1em;
+  backface-visibility: hidden;
+`;
+
+const FlashcardBack = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #e0e0e0;
+  box-shadow: 5px 5px 7px rgba(33, 33, 33, .7);
+  padding: 1em;
+  backface-visibility: hidden;
+  transform: rotateY(180deg);
+`;
 
 export default function MainBody({ posts = [], searchQuery }) {
   const [filteredPosts, setFilteredPosts] = useState(posts);
@@ -100,17 +211,28 @@ export default function MainBody({ posts = [], searchQuery }) {
     }
   };
 
+
   return (
-    <div className="flex flex-col justify-center items-start  overflow-hidden bg-[url('./image/bg.jpg')]  bg-cover bg-center">
-        <h1 className=' text-white ml-2'>Questions for the group?</h1>         
-      <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 ml-[10%] mt-4 w-[80%] h-[500px] overflow-y-scroll no-scrollbar'>
-            { filteredPosts.map(post => <Post key={post.id} post={post} onDeletePost={handleDeletePost}/>) }
-          </div>
-          <div className='flex justify-between flex-col items-center w-screen mb-2'>
+    <MainContainer>
+      <h3>Questions for the group?</h3>
+      <ul className='pt-4 gap-4 overflow-y-scroll '>
+        {filteredPosts.map((post) => (
+          <FlashcardContainer key={post.id}>
+            <Flashcard>
+              <FlashcardFront>
+                <Post post={post} onDeletePost={handleDeletePost}/>
+              </FlashcardFront>
+              <FlashcardBack>
+                <Answer post={post} onDeletePost={handleDeletePost}/>
+              </FlashcardBack>
+            </Flashcard>
+          </FlashcardContainer>
+        ))}
+      </ul>
+      <div className='flex justify-between flex-col items-center w-screen mb-2'>
             <h2 className='text-white'>Have new question* </h2>
               <AddQuestionCard onInsertPost={handleInsertPost}/>
-          </div>
-    </div>
-  )
-}
-
+      </div>
+    </MainContainer>
+  );
+};

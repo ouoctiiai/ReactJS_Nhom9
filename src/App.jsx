@@ -24,7 +24,7 @@ function App() {
     setSearchQuery(query);
   }
   return (
-    <>  
+    <>
       <div >
         <Header onSearch = {handleSearch}/>
         <Navbar />
@@ -36,7 +36,8 @@ function App() {
         </div>
         
         <Footer />
-      </div>  
+      </div>
+      {/* <Login/> */}
     </>
   )
 }
