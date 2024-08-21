@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './Login.css';
 import styled from 'styled-components';
 import { FaFacebookF, FaGooglePlusG } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 
 const LoginContainer = styled.div`
     background: #f6f5f7;
@@ -145,6 +146,19 @@ input {
 `;
 const Login = () => {
     const [isRightPanelActive, setIsRightPanelActive] = useState(false);
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [users, setUsers] = useState([]);
+    const [newUsername, setNewUsername] = useState('');
+    const [newPassword, setNewPassword] = useState('');
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        fetch('https://66c5b873134eb8f4349556fb.mockapi.io/users')
+            .then(response => response.json())
+            .then(data => setUsers(data))
+            .catch(error => console.error('Error fetching data:', error));
+    }, []);
 
     const handleSignUpClick = () => {
         setIsRightPanelActive(true);
@@ -154,33 +168,81 @@ const Login = () => {
         setIsRightPanelActive(false);
     };
 
+    const handleLogin = (e) => {
+        e.preventDefault();
+        const user = users.find(u => u.username === username && u.password === password);
+        if (user) {
+            navigate('/');
+        } else {
+            alert("Invalid username or password");
+        }
+    };
+
+    const handleRegister = (e) => {
+        e.preventDefault();
+
+        // Kiểm tra nếu username hoặc password rỗng
+        if (!newUsername || !newPassword) {
+            alert("Username and password cannot be empty.");
+            return;
+        }
+
+        // Kiểm tra xem tên người dùng có tồn tại hay không
+        const userExists = users.some(u => u.username === newUsername);
+
+        if (userExists) {
+            alert("Username already exists. Please choose a different username.");
+        } else {
+            const newUser = {
+                username: newUsername,
+                password: newPassword,
+                role: "intern"
+            };
+
+            // Gửi yêu cầu POST để thêm người dùng mới
+            fetch('https://66c5b873134eb8f4349556fb.mockapi.io/users', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(newUser)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    setUsers([...users, data]); // Cập nhật danh sách người dùng
+                    alert("Account created successfully!");
+                    setIsRightPanelActive(false); // Chuyển về chế độ đăng nhập sau khi đăng ký thành công
+                })
+                .catch(error => console.error('Error adding new user:', error));
+        }
+    };
+
     return (
         <LoginContainer>
             <div className={`container ${isRightPanelActive ? 'right-panel-active' : ''}`} id="container">
                 <div className="form-container sign-up-container">
-                    <form action="#">
+                    <form onSubmit={handleRegister}>
                         <h1>Create Account</h1>
                         <div className="social-container">
                             <a href="#" className="social"><FaFacebookF /></a>
                             <a href="#" className="social"><FaGooglePlusG /></a>
                         </div>
                         <span>or use your email for registration</span>
-                        <input type="text" placeholder="Name" />
-                        <input type="email" placeholder="Email" />
-                        <input type="password" placeholder="Password" />
+                        <input type="text" placeholder="Username" value={newUsername} onChange={(e) => setNewUsername(e.target.value)} />
+                        <input type="password" placeholder="Password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
                         <button>Sign Up</button>
                     </form>
                 </div>
                 <div className="form-container sign-in-container">
-                    <form action="#">
+                    <form onSubmit={handleLogin}>
                         <h1>Sign in</h1>
                         <div className="social-container">
                             <a href="#" className="social"><FaFacebookF /></a>
                             <a href="#" className="social"><FaGooglePlusG /></a>
                         </div>
                         <span>or use your account</span>
-                        <input type="email" placeholder="Email" />
-                        <input type="password" placeholder="Password" />
+                        <input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
+                        <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
                         <a href="#">Forgot your password?</a>
                         <button>Sign In</button>
                     </form>
