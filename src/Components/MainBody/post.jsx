@@ -72,14 +72,12 @@ p {
     }
 `;
 
-export default function Post({ post, onDeletePost, userRole }) {
+export default function Post({ post, onDeletePost, userRole, onUpdatePost, onAnswerPost}) {
     const user = JSON.parse(localStorage.getItem('user'));
     const currentUsername = user ? user.username : '';
-    
     const [likes, setLikes] = useState(post.likes ?? []);
     const [hasLiked, setHasLiked] = useState(post.likes?.includes(currentUsername) ?? false);
     const [data, setData] = useState(post);
-    const [userLike, setUserLike]=useState(false);
 
     const handleUpdateDataQS = (question) => {
         const newData = { ...data };
@@ -95,19 +93,11 @@ export default function Post({ post, onDeletePost, userRole }) {
     }
 
     const handleUpdateClick = () => {
-        setShowUpdateCard(true);
-    };
-
-    const handleCloseUpdateCard = () => {
-        setShowUpdateCard(false);
+        onUpdatePost(post);
     };
 
     const handleAnswerClick = () => {
-        setShowAnswerCard(true);
-    };
-
-    const handleCloseAnswerCard = () => {
-        setShowAnswerCard(false);
+        onAnswerPost(post);
     };
 
     const handleLikeClick = async () => {

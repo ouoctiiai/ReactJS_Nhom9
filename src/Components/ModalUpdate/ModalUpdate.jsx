@@ -49,16 +49,6 @@ function ModalUpdate({ setOpenModal, post }) {
         </div>
         <div className="body">
         <form onSubmit={handleSave}>
-          <div className="row gx-3 mb-3">
-            <div className="col-md-6">
-              <label className="small mb-1" htmlFor="inputId">id:</label>
-              <input className="form-control" id="inputId" type="text" value={post.id} disabled />
-            </div>
-            <div className="col-md-6">
-              <label className="small mb-1" htmlFor="inputLikes">Likes:</label>
-              <input className="form-control" id="inputLikes" type="text" value={(post.likes?.length ?? 0)}disabled />
-            </div>
-          </div>
           <div className="mb-3">
             <label className="small mb-1" htmlFor="inputQuestion">Question: </label>
             <input className="form-control" id="inputQuestion" type="text" placeholder="Enter your question" name="question" value={formData.question} onChange={handleChange} />

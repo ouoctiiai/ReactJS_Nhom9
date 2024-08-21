@@ -123,7 +123,6 @@ const FlashcardBack = styled.div`
 
 export default function MainBody({ posts = [], searchQuery }) {
   const [filteredPosts, setFilteredPosts] = useState(posts);
-  const [nextId, setNextId] = useState(null);
   const [userRole, setUserRole] = useState(null);
   const [currentPost, setCurrentPost] = useState(null);
 
@@ -145,25 +144,6 @@ export default function MainBody({ posts = [], searchQuery }) {
     }
   }, [posts, searchQuery]);
 
-  useEffect(() => {
-    const fetchNextId = async () => {
-      try {
-        const response = await fetch('https://66c075a5ba6f27ca9a56aed0.mockapi.io/questions');
-
-        if (!response.ok) {
-          throw new Error('Error fetching posts');
-        }
-
-        const data = await response.json();
-        const maxId = Math.max(...data.map(post => post.id));
-        setNextId(maxId + 1);
-      } catch (error) {
-        console.error('Error fetching next ID:', error);
-      }
-    };
-
-    fetchNextId();
-  }, [posts]);
 
   const handleDeletePost = async (postId) => {
     if (!window.confirm(`Are you sure you want to delete this question?`)) {
@@ -190,46 +170,6 @@ export default function MainBody({ posts = [], searchQuery }) {
     }
   };
 
-  const handleInsertPost = async (question) => {
-    if (!question) {
-      alert('Vui lòng nhập câu hỏi.');
-      return;
-    }
-
-    const user = JSON.parse(localStorage.getItem('user'));
-    const writer = user ? user.username : 'unknown';
-
-    const newQuestion = {
-      id: nextId,
-      question: question,
-      likes: [],
-      answer: '',
-      writer: writer,
-      date: new Date().toLocaleDateString(),
-    };
-
-    try {
-      const response = await fetch('https://66c075a5ba6f27ca9a56aed0.mockapi.io/questions', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(newQuestion),
-      });
-
-      if (!response.ok) {
-        throw new Error('Error');
-      }
-      console.log('Post inserted successfully!');
-      alert('Post inserted successfully!');
-
-      if (searchQuery.trim() === '' || newQuestion.question.toLowerCase().includes(searchQuery.toLowerCase())) {
-        setFilteredPosts((prevFilteredPosts) => [...prevFilteredPosts, newQuestion]);
-      }
-
-    } catch (error) {
-      console.error('Error:', error);
-      alert('Error');
-    }
-  };
 
   const [modalOpen, setModalOpen] = useState(false);
   const [modalOpenAS, setModalOpenAS] = useState(false);
@@ -258,7 +198,7 @@ export default function MainBody({ posts = [], searchQuery }) {
       post={currentPost} />}
 
       <h3>Questions for the group?</h3>
-      <ul className='pt-4 gap-4 overflow-y-scroll '>
+      <ul className='pt-4 gap-4 overflow-y-scroll'>
         {filteredPosts.map((post) => (
           <FlashcardContainer key={post.id} className={post.answer ? 'has-answer' : ''}>
             <Flashcard>
@@ -272,10 +212,6 @@ export default function MainBody({ posts = [], searchQuery }) {
           </FlashcardContainer>
         ))}
       </ul>
-      <div className='flex justify-between flex-col items-center w-screen mb-2'>
-        <h2 className='text-white'>Have new question* </h2>
-        <AddQuestionCard onInsertPost={handleInsertPost} />
-      </div>
     </MainContainer>
   );
 };

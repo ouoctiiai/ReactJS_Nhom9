@@ -75,7 +75,6 @@ p {
 export default function Answer ({post, onDeletePost, userRole, onUpdatePost, onAnswerPost}) {
     const user = JSON.parse(localStorage.getItem('user'));
     const currentUsername = user ? user.username : '';
-
     const [likes, setLikes] = useState(post.likes ?? []);
     const [hasLiked, setHasLiked] = useState(post.likes?.includes(currentUsername) ?? false);
     const [data, setData] = useState(post);
