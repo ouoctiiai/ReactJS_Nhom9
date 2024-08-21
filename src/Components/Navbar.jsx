@@ -28,8 +28,8 @@ const Navbar = () => {
                 </button>
 
                 <div className={`lg:flex lg:items-center lg:w-auto ${isOpen ? 'block' : 'hidden'}`}>
-                    <Link to="/" className="block no-underline  text-white px-4 py-2 hover:bg-gray-700 text- ">Home</Link>
-                    <Link to="/filterquestion" className="block no-underline  text-white px-4 py-2 hover:bg-gray-700">Filter Question</Link>
+                    <Link to="/home/mainbody" className="block no-underline  text-white px-4 py-2 hover:bg-gray-700 text- ">Home</Link>
+                    <Link to="/home/filterquestion" className="block no-underline  text-white px-4 py-2 hover:bg-gray-700">Filter Question</Link>
                     <Link to="/yourquestion" className="block no-underline  text-white px-4 py-2 hover:bg-gray-700">Your Question</Link>
                 </div>
             </div>

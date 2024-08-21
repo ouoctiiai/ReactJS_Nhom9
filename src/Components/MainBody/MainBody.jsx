@@ -127,7 +127,6 @@ export default function MainBody({ posts = [], searchQuery }) {
   const [userRole, setUserRole] = useState(null);
   const [currentPost, setCurrentPost] = useState(null);
 
-
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user'));
     if (user) {

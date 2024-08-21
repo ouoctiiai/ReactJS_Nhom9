@@ -4,8 +4,8 @@ import MainBody from './MainBody/MainBody';
 const FilterQuestion = ({ questions }) => {
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
-    const [noAnswerOnly, setNoAnswerOnly] = useState(false);
-    const [filteredPosts, setFilteredPosts] = useState(questions);
+    const [noAnswerOnly, setNoAnswerOnly] = useState(true);
+    const [filteredPosts, setFilteredPosts] = useState([...questions]);
     const handleStartDateChange = (event) => {
         setStartDate(event.target.value);
     };
@@ -38,7 +38,8 @@ const FilterQuestion = ({ questions }) => {
         }
         setFilteredPosts(updatedPosts);
     };
-
+    console.log(filteredPosts,questions);
+    
     return (
         <div className='flex flex-col justify-center items-center'>
             <div className="filter-container  w-[30%] mt-3  space-y-4 p-4 bg-white shadow-md rounded-lg">
@@ -80,7 +81,7 @@ const FilterQuestion = ({ questions }) => {
                 </button>
             </div>
             <div>
-                <MainBody posts={filteredPosts} searchQuery={''} />
+                <MainBody posts = {filteredPosts} searchQuery={''} />
             </div>
 
         </div>
