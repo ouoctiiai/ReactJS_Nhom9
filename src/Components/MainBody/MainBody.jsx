@@ -73,24 +73,31 @@ const FlashcardContainer = styled.li`
   perspective: 1000px;
   margin: 1em;
   z-index: 1;
-  transition: z-index 0.6s;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+  transform: rotateY(0deg);
 
-  &:hover {
+  &.has-answer:hover {
     z-index: 2;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+    transform: rotateY(180deg);
   }
 `;
 
 const Flashcard = styled.div`
- position: absolute;
+  position: absolute;
   width: 100%;
   height: 100%;
   transition: transform 0.6s;
   transform-style: preserve-3d;
   transform: rotateY(0deg);
 
-  ${FlashcardContainer}:hover & {
-    transform: rotateY(180deg);
-  }
+  // .has-answer & {
+  //   ${FlashcardContainer}:hover & {
+  //     transform: rotateY(180deg);
+  //   }
+  // }
 `;
 
 const FlashcardFront = styled.div`
@@ -116,9 +123,18 @@ const FlashcardBack = styled.div`
 
 export default function MainBody({ posts = [], searchQuery }) {
   const [filteredPosts, setFilteredPosts] = useState(posts);
-  const [nextId, setNextId] = useState(null); 
+  const [nextId, setNextId] = useState(null);
+  const [userRole, setUserRole] = useState(null);
   const [currentPost, setCurrentPost] = useState(null);
-  
+
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user) {
+      setUserRole(user.role);
+    }
+  }, []);
+
   useEffect(() => {
     if (searchQuery.trim() === '') {
       setFilteredPosts(posts);
@@ -141,7 +157,7 @@ export default function MainBody({ posts = [], searchQuery }) {
 
         const data = await response.json();
         const maxId = Math.max(...data.map(post => post.id));
-        setNextId(maxId + 1); 
+        setNextId(maxId + 1);
       } catch (error) {
         console.error('Error fetching next ID:', error);
       }
@@ -158,14 +174,14 @@ export default function MainBody({ posts = [], searchQuery }) {
       const response = await fetch(`https://66c075a5ba6f27ca9a56aed0.mockapi.io/questions/${postId}`, {
         method: 'DELETE',
       });
-  
+
       if (!response.ok) {
         throw new Error(`Error deleting post: ${response.statusText}`);
       }
-  
+
       console.log('Post deleted successfully!');
       alert('Post deleted successfully');
-  
+
       setFilteredPosts((prevFilteredPosts) =>
         prevFilteredPosts.filter((post) => post.id !== postId)
       );
@@ -180,29 +196,32 @@ export default function MainBody({ posts = [], searchQuery }) {
       alert('Vui lòng nhập câu hỏi.');
       return;
     }
-  
+
+    const user = JSON.parse(localStorage.getItem('user'));
+    const writer = user ? user.username : 'unknown';
+
     const newQuestion = {
       id: nextId,
       question: question,
       likes: [],
       answer: '',
-      writer: 'andanh',
+      writer: writer,
       date: new Date().toLocaleDateString(),
     };
-  
+
     try {
       const response = await fetch('https://66c075a5ba6f27ca9a56aed0.mockapi.io/questions', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newQuestion),
       });
-  
+
       if (!response.ok) {
         throw new Error('Error');
       }
       console.log('Post inserted successfully!');
       alert('Post inserted successfully!');
-      
+
       if (searchQuery.trim() === '' || newQuestion.question.toLowerCase().includes(searchQuery.toLowerCase())) {
         setFilteredPosts((prevFilteredPosts) => [...prevFilteredPosts, newQuestion]);
       }
@@ -242,21 +261,21 @@ export default function MainBody({ posts = [], searchQuery }) {
       <h3>Questions for the group?</h3>
       <ul className='pt-4 gap-4 overflow-y-scroll '>
         {filteredPosts.map((post) => (
-          <FlashcardContainer key={post.id}>
+          <FlashcardContainer key={post.id} className={post.answer ? 'has-answer' : ''}>
             <Flashcard>
               <FlashcardFront>
-                <Post post={post} onDeletePost={handleDeletePost} onUpdatePost={handleUpdatePost} onAnswerPost={handleAnswerPost}/>
+                <Post post={post} onDeletePost={handleDeletePost} userRole={userRole} onUpdatePost={handleUpdatePost} onAnswerPost={handleAnswerPost}/>
               </FlashcardFront>
               <FlashcardBack>
-                <Answer post={post} onDeletePost={handleDeletePost} onUpdatePost={handleUpdatePost} onAnswerPost={handleAnswerPost}/>
+                <Answer post={post} onDeletePost={handleDeletePost} userRole={userRole} onUpdatePost={handleUpdatePost} onAnswerPost={handleAnswerPost}/>
               </FlashcardBack>
             </Flashcard>
           </FlashcardContainer>
         ))}
       </ul>
       <div className='flex justify-between flex-col items-center w-screen mb-2'>
-            <h2 className='text-white'>Have new question* </h2>
-              <AddQuestionCard onInsertPost={handleInsertPost}/>
+        <h2 className='text-white'>Have new question* </h2>
+        <AddQuestionCard onInsertPost={handleInsertPost} />
       </div>
     </MainContainer>
   );

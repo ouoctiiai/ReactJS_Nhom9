@@ -74,11 +74,16 @@ p {
     }
 `;
 
-export default function Post({ post, onDeletePost, onUpdatePost }) {
-    const [likes, setLikes] = useState(post.likes ?? []); 
-    const [hasLiked, setHasLiked] = useState(post.likes?.includes('andanh') ?? false); 
+export default function Post({ post, onDeletePost, userRole }) {
+    const user = JSON.parse(localStorage.getItem('user'));
+    const currentUsername = user ? user.username : '';
+    
+    const [likes, setLikes] = useState(post.likes ?? []);
+    const [hasLiked, setHasLiked] = useState(post.likes?.includes(currentUsername) ?? false);
+    const [showUpdateCard, setShowUpdateCard] = useState(false);
+    const [showAnswerCard, setShowAnswerCard] = useState(false);
     const [data, setData] = useState(post);
-
+    const [userLike, setUserLike]=useState(false);
 
     const handleUpdateDataQS = (question) => {
         const newData = { ...data };
@@ -94,34 +99,35 @@ export default function Post({ post, onDeletePost, onUpdatePost }) {
     }
 
     const handleUpdateClick = () => {
-        setShowUpdateCard(true); 
+        setShowUpdateCard(true);
     };
 
     const handleCloseUpdateCard = () => {
-        setShowUpdateCard(false); 
-      };
+        setShowUpdateCard(false);
+    };
 
-      const handleAnswerClick = () => {
-        setShowAnswerCard(true); 
+    const handleAnswerClick = () => {
+        setShowAnswerCard(true);
     };
 
     const handleCloseAnswerCard = () => {
-        setShowAnswerCard(false); 
-      };
-    
+        setShowAnswerCard(false);
+    };
+
     const handleLikeClick = async () => {
         const newLikes = [...likes];
         const liked = hasLiked;
 
+
         if (liked) {
             // Nếu đã thích, bỏ thích
-            const index = newLikes.indexOf('andanh');
+            const index = newLikes.indexOf(currentUsername);
             if (index > -1) {
                 newLikes.splice(index, 1);
             }
         } else {
             // Nếu chưa thích, thêm thích
-            newLikes.push('andanh');
+            newLikes.push(currentUsername);
         }
 
         try {
@@ -159,12 +165,14 @@ export default function Post({ post, onDeletePost, onUpdatePost }) {
                 <div className='flex gap-2'>
                     <User /><h7>{data.writer}</h7>
                 </div>
-                <span className='trash-icon'>
-                    <button onClick={() => onDeletePost(data.id)}>
-                        <Trash2 />
-                    </button>
-                </span>
-                <hr style={{margin: '10px', border: '0.15px solid black', opacity: '.8'}}/>
+                {(userRole === 'admin' || (userRole === 'intern' && data.writer === currentUsername)) && (
+                    <span className='trash-icon'>
+                        <button onClick={() => onDeletePost(data.id)}>
+                            <Trash2 />
+                        </button>
+                    </span>
+                )}
+                <hr style={{ margin: '10px', border: '0.15px solid black', opacity: '.8' }} />
                 <p>{data.question}</p>
                 <div className='icon-container'>
                     <span className='heart-item'>
@@ -173,16 +181,20 @@ export default function Post({ post, onDeletePost, onUpdatePost }) {
                         </button>
                     </span>
                     <span className='heart-quantity'>{likes.length}</span>
-                    <span className='brush-item'>
-                        <button type="button" onClick={handleUpdateClick}>
-                            <Brush />
-                        </button>
-                    </span>
-                    <span className='reply-item'>
-                        <button type="button" onClick={handleAnswerClick}>
-                            <MessageCircleReply />
-                        </button>
-                    </span>
+                    {userRole === 'intern' && (
+                        <span className='brush-item'>
+                            <button type="button" onClick={handleUpdateClick}>
+                                <Brush />
+                            </button>
+                        </span>
+                    )}
+                    {userRole === 'admin' && (
+                        <span className='reply-item'>
+                            <button type="button" onClick={handleAnswerClick}>
+                                <MessageCircleReply />
+                            </button>
+                        </span>
+                    )}
                 </div>
                 <span className='date-text' style={{ fontSize: '12px' }}>
                     <h7>{data.date}</h7>

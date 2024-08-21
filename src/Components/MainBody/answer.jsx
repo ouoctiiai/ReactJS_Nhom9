@@ -72,7 +72,10 @@ p {
     }
 `;
 
-export default function Answer ({post, onDeletePost, onUpdatePost, onAnswerPost}) {
+export default function Answer ({post, onDeletePost, userRole, onUpdatePost, onAnswerPost}) {
+    const user = JSON.parse(localStorage.getItem('user'));
+    const currentUsername = user ? user.username : '';
+
     const [likes, setLikes] = useState(post.likes ?? []);
     const [hasLiked, setHasLiked] = useState(post.likes?.includes('andanh') ?? false);
     const [data, setData] = useState(post);
@@ -104,13 +107,13 @@ export default function Answer ({post, onDeletePost, onUpdatePost, onAnswerPost}
 
         if (liked) {
             // Nếu đã thích, bỏ thích
-            const index = newLikes.indexOf('andanh');
+            const index = newLikes.indexOf(currentUsername);
             if (index > -1) {
                 newLikes.splice(index, 1);
             }
         } else {
             // Nếu chưa thích, thêm thích
-            newLikes.push('andanh');
+            newLikes.push(currentUsername);
         }
 
         try {
@@ -136,7 +139,7 @@ export default function Answer ({post, onDeletePost, onUpdatePost, onAnswerPost}
             alert('An error occurred while updating likes. Please try again later.');
         }
     };
-    
+
     return (
         <PostContainer>
             <a>
@@ -148,13 +151,15 @@ export default function Answer ({post, onDeletePost, onUpdatePost, onAnswerPost}
                 <div className='flex gap-2'>
                     <User /><h7>{post.writer}</h7>
                 </div>
-                <span className='trash-icon'>
-                    <button onClick={() => onDeletePost(post.id)}>
-                        <Trash2 />
-                    </button>
-                </span>
-                <hr style={{margin: '10px', border: '0.15px solid black', opacity: '.8'}}/>
-                <p style={{fontSize: '14px'}}>{post.answer}</p>
+                {(userRole === 'admin' || (userRole === 'intern' && post.writer === currentUsername)) && (
+                    <span className='trash-icon'>
+                        <button onClick={() => onDeletePost(post.id)}>
+                            <Trash2 />
+                        </button>
+                    </span>
+                )}
+                <hr style={{ margin: '10px', border: '0.15px solid black', opacity: '.8' }} />
+                <p style={{ fontSize: '14px' }}>{post.answer}</p>
                 <div className='icon-container'>
                     <span className='heart-item'>
                         <button type="button" onClick={handleLikeClick} style={{ background: 'none', border: 'none' }}>
@@ -162,16 +167,20 @@ export default function Answer ({post, onDeletePost, onUpdatePost, onAnswerPost}
                         </button>
                     </span>
                     <span className='heart-quantity'>{likes.length}</span>
-                    <span className='brush-item'>
-                        <button type="button" onClick={handleUpdateClick}>
-                            <Brush />
-                        </button>
-                    </span>
-                    <span className='reply-item'>
-                        <button type="button" onClick={handleAnswerClick}>
-                            <MessageCircleReply />
-                        </button>
-                    </span>
+                    {userRole === 'intern' && (
+                        <span className='brush-item'>
+                            <button type="button" onClick={handleUpdateClick}>
+                                <Brush />
+                            </button>
+                        </span>
+                    )}
+                    {userRole === 'admin' && (
+                        <span className='reply-item'>
+                            <button type="button" onClick={handleAnswerClick}>
+                                <MessageCircleReply />
+                            </button>
+                        </span>
+                    )}
                 </div>
                 <span className='date-text' style={{ fontSize: '12px' }}>
                     <h7>{post.date}</h7>
