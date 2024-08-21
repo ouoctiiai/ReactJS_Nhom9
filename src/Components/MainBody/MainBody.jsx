@@ -72,24 +72,31 @@ const FlashcardContainer = styled.li`
   perspective: 1000px;
   margin: 1em;
   z-index: 1;
-  transition: z-index 0.6s;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+  transform: rotateY(0deg);
 
-  &:hover {
+  &.has-answer:hover {
     z-index: 2;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+    transform: rotateY(180deg);
   }
 `;
 
 const Flashcard = styled.div`
- position: absolute;
+  position: absolute;
   width: 100%;
   height: 100%;
   transition: transform 0.6s;
   transform-style: preserve-3d;
   transform: rotateY(0deg);
 
-  ${FlashcardContainer}:hover & {
-    transform: rotateY(180deg);
-  }
+  // .has-answer & {
+  //   ${FlashcardContainer}:hover & {
+  //     transform: rotateY(180deg);
+  //   }
+  // }
 `;
 
 const FlashcardFront = styled.div`
@@ -228,7 +235,7 @@ export default function MainBody({ posts = [], searchQuery }) {
       <h3>Questions for the group?</h3>
       <ul className='pt-4 gap-4 overflow-y-scroll '>
         {filteredPosts.map((post) => (
-          <FlashcardContainer key={post.id}>
+          <FlashcardContainer key={post.id} className={post.answer ? 'has-answer' : ''}>
             <Flashcard>
               <FlashcardFront>
                 <Post post={post} onDeletePost={handleDeletePost} userRole={userRole}/>
