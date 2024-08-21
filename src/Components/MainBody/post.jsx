@@ -3,8 +3,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Trash2, Heart, Brush, User, MessageCircleReply } from 'lucide-react';
 import styled from 'styled-components';
 import { FaHeart } from 'react-icons/fa';
-import AnswerCard from './AnswerCard';
-import UpdateQuestionCard from './UpdateQuestionCard';
 
 const PostContainer = styled.li`
 

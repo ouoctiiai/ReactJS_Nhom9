@@ -648,9 +648,14 @@ const handleAddNew = () => {
 )}
 
         {/* Phần phân trang */}
-        <div className="pagination">
-          <button disabled={false}>Previous</button>
-          <button disabled={false}>Next</button>
+          <div className="pagination">
+            <button className="page-button">{'<'}</button>
+            <button className="page-number active">1</button>
+            <button className="page-number">2</button>
+            <button className="page-number">3</button>
+            <span className="pagination-dots">...</span>
+            <button className="page-number">10</button>
+            <button className="page-button">{'>'}</button>
         </div>
       </div>
     </main>
