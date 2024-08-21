@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import styled from 'styled-components';
-import { FaHeart } from 'react-icons/fa';
 import Post from './post';
-import { Trash2 } from 'lucide-react';
 import Answer from './answer';
 import AddQuestionCard from './AddQuestionCard';
+import ModalUpdate from '../ModalUpdate/ModalUpdate';
+import ModalAnswer from '../ModalAnswer/ModalAnswer';
+
 
 export const MainContainer = styled.div`
   background-color: aliceblue;
@@ -116,6 +117,7 @@ const FlashcardBack = styled.div`
 export default function MainBody({ posts = [], searchQuery }) {
   const [filteredPosts, setFilteredPosts] = useState(posts);
   const [nextId, setNextId] = useState(null); 
+  const [currentPost, setCurrentPost] = useState(null);
   
   useEffect(() => {
     if (searchQuery.trim() === '') {
@@ -211,19 +213,42 @@ export default function MainBody({ posts = [], searchQuery }) {
     }
   };
 
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalOpenAS, setModalOpenAS] = useState(false);
+
+
+  const handleUpdatePost = async(Post)=>{
+    setModalOpen(true);
+    setCurrentPost(Post);
+  }
+
+  const handleAnswerPost = async(Post)=>{
+    setModalOpenAS(true);
+    setCurrentPost(Post);
+  }
 
   return (
+    
     <MainContainer>
+
+      {modalOpen && <ModalUpdate 
+      setOpenModal={setModalOpen}
+      post={currentPost} />}
+
+      {modalOpenAS && <ModalAnswer 
+      setOpenModal={setModalOpenAS}
+      post={currentPost} />}
+
       <h3>Questions for the group?</h3>
       <ul className='pt-4 gap-4 overflow-y-scroll '>
         {filteredPosts.map((post) => (
           <FlashcardContainer key={post.id}>
             <Flashcard>
               <FlashcardFront>
-                <Post post={post} onDeletePost={handleDeletePost}/>
+                <Post post={post} onDeletePost={handleDeletePost} onUpdatePost={handleUpdatePost} onAnswerPost={handleAnswerPost}/>
               </FlashcardFront>
               <FlashcardBack>
-                <Answer post={post} onDeletePost={handleDeletePost}/>
+                <Answer post={post} onDeletePost={handleDeletePost} onUpdatePost={handleUpdatePost} onAnswerPost={handleAnswerPost}/>
               </FlashcardBack>
             </Flashcard>
           </FlashcardContainer>

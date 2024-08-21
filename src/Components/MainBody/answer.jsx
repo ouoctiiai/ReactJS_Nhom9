@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Trash2, Heart, Brush, User, MessageCircleReply } from 'lucide-react';
 import styled from 'styled-components';
 import { FaHeart } from 'react-icons/fa';
+import Post from './post';
 
 const PostContainer = styled.li`
 p {
@@ -71,26 +72,30 @@ p {
     }
 `;
 
-export default function Answer ({post, onDeletePost}) {
+export default function Answer ({post, onDeletePost, onUpdatePost, onAnswerPost}) {
     const [likes, setLikes] = useState(post.likes ?? []);
     const [hasLiked, setHasLiked] = useState(post.likes?.includes('andanh') ?? false);
-    const [showUpdateCard, setShowUpdateCard] = useState(false);
-    const [showAnswerCard, setShowAnswerCard] = useState(false);
+    const [data, setData] = useState(post);
+
+    
+    const handleUpdateDataQS = (question) => {
+        const newData = { ...data };
+        newData.question = question;
+        setData(newData);
+    }
+
+    const handleUpdateDataAS = (answer) => {
+        const newData = { ...data };
+        newData.answer = answer;
+        setData(newData);
+    }
 
     const handleUpdateClick = () => {
-        setShowUpdateCard(true);
-    };
-
-    const handleCloseUpdateCard = () => {
-        setShowUpdateCard(false);
+        onUpdatePost(post);
     };
 
     const handleAnswerClick = () => {
-        setShowAnswerCard(true);
-    };
-
-    const handleCloseAnswerCard = () => {
-        setShowAnswerCard(false);
+        onAnswerPost(post);
     };
 
     const handleLikeClick = async () => {
@@ -171,19 +176,6 @@ export default function Answer ({post, onDeletePost}) {
                 <span className='date-text' style={{ fontSize: '12px' }}>
                     <h7>{post.date}</h7>
                 </span>
-                {showUpdateCard && (
-                    <UpdateQuestionCard
-                        post={post}
-                        onClose={handleCloseUpdateCard}
-                        onUpdatePost={handleUpdatePost}
-                    />
-                )}
-                {showAnswerCard && (
-                    <AnswerCard
-                        post={post}
-                        onClose={handleCloseAnswerCard}
-                    />
-                )}
             </a>
         </PostContainer>
     );

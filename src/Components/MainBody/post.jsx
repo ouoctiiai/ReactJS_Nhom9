@@ -4,7 +4,6 @@ import { Trash2, Heart, Brush, User, MessageCircleReply } from 'lucide-react';
 import styled from 'styled-components';
 import { FaHeart } from 'react-icons/fa';
 import AnswerCard from './AnswerCard';
-// import './MainBody.css';
 import UpdateQuestionCard from './UpdateQuestionCard';
 
 const PostContainer = styled.li`
@@ -75,11 +74,9 @@ p {
     }
 `;
 
-export default function Post({ post, onDeletePost }) {
+export default function Post({ post, onDeletePost, onUpdatePost }) {
     const [likes, setLikes] = useState(post.likes ?? []); 
     const [hasLiked, setHasLiked] = useState(post.likes?.includes('andanh') ?? false); 
-    const [showUpdateCard, setShowUpdateCard] = useState(false); 
-    const [showAnswerCard, setShowAnswerCard] = useState(false); 
     const [data, setData] = useState(post);
 
 
@@ -87,6 +84,7 @@ export default function Post({ post, onDeletePost }) {
         const newData = { ...data };
         newData.question = question;
         setData(newData);
+        onUpdatePost();
     }
 
     const handleUpdateDataAS = (answer) => {
@@ -189,20 +187,6 @@ export default function Post({ post, onDeletePost }) {
                 <span className='date-text' style={{ fontSize: '12px' }}>
                     <h7>{data.date}</h7>
                 </span>
-                {showUpdateCard && (
-                    <UpdateQuestionCard
-                        post={post}
-                        onClose={handleCloseUpdateCard}
-                        onUpdatePost={handleUpdatePost}
-                    />
-                )}
-                {showAnswerCard && (
-                    <AnswerCard
-                        post={post}
-                        onClose={handleCloseAnswerCard}
-                        onUpdate={handleUpdateDataAS}
-                    />
-                )}
             </a>
         </PostContainer>
     );
