@@ -115,8 +115,16 @@ const FlashcardBack = styled.div`
 
 export default function MainBody({ posts = [], searchQuery }) {
   const [filteredPosts, setFilteredPosts] = useState(posts);
-  const [nextId, setNextId] = useState(null); 
-  
+  const [nextId, setNextId] = useState(null);
+  const [userRole, setUserRole] = useState(null);
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user) {
+      setUserRole(user.role);
+    }
+  }, []);
+
   useEffect(() => {
     if (searchQuery.trim() === '') {
       setFilteredPosts(posts);
@@ -139,7 +147,7 @@ export default function MainBody({ posts = [], searchQuery }) {
 
         const data = await response.json();
         const maxId = Math.max(...data.map(post => post.id));
-        setNextId(maxId + 1); 
+        setNextId(maxId + 1);
       } catch (error) {
         console.error('Error fetching next ID:', error);
       }
@@ -156,14 +164,14 @@ export default function MainBody({ posts = [], searchQuery }) {
       const response = await fetch(`https://66c075a5ba6f27ca9a56aed0.mockapi.io/questions/${postId}`, {
         method: 'DELETE',
       });
-  
+
       if (!response.ok) {
         throw new Error(`Error deleting post: ${response.statusText}`);
       }
-  
+
       console.log('Post deleted successfully!');
       alert('Post deleted successfully');
-  
+
       setFilteredPosts((prevFilteredPosts) =>
         prevFilteredPosts.filter((post) => post.id !== postId)
       );
@@ -178,29 +186,32 @@ export default function MainBody({ posts = [], searchQuery }) {
       alert('Vui lòng nhập câu hỏi.');
       return;
     }
-  
+
+    const user = JSON.parse(localStorage.getItem('user'));
+    const writer = user ? user.username : 'unknown';
+
     const newQuestion = {
       id: nextId,
       question: question,
       likes: [],
       answer: '',
-      writer: 'andanh',
+      writer: writer,
       date: new Date().toLocaleDateString(),
     };
-  
+
     try {
       const response = await fetch('https://66c075a5ba6f27ca9a56aed0.mockapi.io/questions', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newQuestion),
       });
-  
+
       if (!response.ok) {
         throw new Error('Error');
       }
       console.log('Post inserted successfully!');
       alert('Post inserted successfully!');
-      
+
       if (searchQuery.trim() === '' || newQuestion.question.toLowerCase().includes(searchQuery.toLowerCase())) {
         setFilteredPosts((prevFilteredPosts) => [...prevFilteredPosts, newQuestion]);
       }
@@ -220,18 +231,18 @@ export default function MainBody({ posts = [], searchQuery }) {
           <FlashcardContainer key={post.id}>
             <Flashcard>
               <FlashcardFront>
-                <Post post={post} onDeletePost={handleDeletePost}/>
+                <Post post={post} onDeletePost={handleDeletePost} userRole={userRole}/>
               </FlashcardFront>
               <FlashcardBack>
-                <Answer post={post} onDeletePost={handleDeletePost}/>
+                <Answer post={post} onDeletePost={handleDeletePost} userRole={userRole}/>
               </FlashcardBack>
             </Flashcard>
           </FlashcardContainer>
         ))}
       </ul>
       <div className='flex justify-between flex-col items-center w-screen mb-2'>
-            <h2 className='text-white'>Have new question* </h2>
-              <AddQuestionCard onInsertPost={handleInsertPost}/>
+        <h2 className='text-white'>Have new question* </h2>
+        <AddQuestionCard onInsertPost={handleInsertPost} />
       </div>
     </MainContainer>
   );

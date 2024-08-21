@@ -172,6 +172,7 @@ const Login = () => {
         e.preventDefault();
         const user = users.find(u => u.username === username && u.password === password);
         if (user) {
+            localStorage.setItem('user', JSON.stringify(user));
             navigate('/');
         } else {
             alert("Invalid username or password");
