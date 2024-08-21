@@ -12,7 +12,7 @@ export default function Header({ onSearch }) {
     <div className="px-4 py-4 h-24 flex items-center justify-between bg-gray-600">
       <div className="flex items-center gap-4">
         <div className="h-24 w-26 sm:h-20 sm:w-18 hidden sm:block">
-          <img src="./image/logo.jpg" alt="Logo" className="h-full w-full" />
+          <img src="/image/logo.jpg" alt="Logo" className="h-full w-full" />
         </div>
       </div>
       <div className="flex items-center gap-2">

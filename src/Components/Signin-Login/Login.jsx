@@ -173,7 +173,7 @@ const Login = () => {
         const user = users.find(u => u.username === username && u.password === password);
         if (user) {
             localStorage.setItem('user', JSON.stringify(user));
-            navigate('/');
+            navigate('/home/mainbody');
         } else {
             alert("Invalid username or password");
         }
