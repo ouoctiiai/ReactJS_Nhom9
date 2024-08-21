@@ -3,11 +3,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Trash2, Heart, Brush, User, MessageCircleReply } from 'lucide-react';
 import styled from 'styled-components';
 import { FaHeart } from 'react-icons/fa';
-// import './MainBody.css';
-// import UpdateQuestionCard from './UpdateQuestionCard';
 
 const PostContainer = styled.li`
-
 p {
     font-size: 1rem;
     font-weight: normal;
@@ -74,7 +71,7 @@ p {
     }
 `;
 
-export default function Post({ post, onDeletePost }) {
+export default function Answer ({post, onDeletePost}) {
     const [likes, setLikes] = useState(post.likes ?? []);
     const [hasLiked, setHasLiked] = useState(post.likes?.includes('andanh') ?? false);
     const [showUpdateCard, setShowUpdateCard] = useState(false);
@@ -134,7 +131,7 @@ export default function Post({ post, onDeletePost }) {
             alert('An error occurred while updating likes. Please try again later.');
         }
     };
-
+    
     return (
         <PostContainer>
             <a>
@@ -152,7 +149,7 @@ export default function Post({ post, onDeletePost }) {
                     </button>
                 </span>
                 <hr style={{margin: '10px', border: '0.15px solid black', opacity: '.8'}}/>
-                <p>{post.question}</p>
+                <p style={{fontSize: '14px'}}>{post.answer}</p>
                 <div className='icon-container'>
                     <span className='heart-item'>
                         <button type="button" onClick={handleLikeClick} style={{ background: 'none', border: 'none' }}>
@@ -190,4 +187,4 @@ export default function Post({ post, onDeletePost }) {
             </a>
         </PostContainer>
     );
-}
+};

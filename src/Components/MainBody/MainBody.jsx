@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { FaHeart } from 'react-icons/fa';
 import Post from './post';
 import { Trash2 } from 'lucide-react';
+import Answer from './answer';
 
 export const MainContainer = styled.div`
   background-color: aliceblue;
@@ -13,16 +14,11 @@ export const MainContainer = styled.div`
     font-size: 2rem;
   }
   
-  p {
-    font-size: 1rem;
-    font-weight: normal;
-    margin-top: 20px
-  }
-  
   ul {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    padding: 1em
   }
     
   ul,
@@ -34,8 +30,8 @@ export const MainContainer = styled.div`
     text-decoration: none;
     color: #000;
     background: #ffc;
-    display: block;
-    height: 13em;
+    display: inline-block;
+    height: auto;
     width: 12em;
     padding: 1em;
     box-shadow: 5px 5px 7px rgba(33, 33, 33, .7);
@@ -66,15 +62,62 @@ export const MainContainer = styled.div`
     position: relative;
     top: -10px;
   }
-    
-  
 `;
+
+const FlashcardContainer = styled.li`
+  position: relative;
+  width: 12em;
+  height: 13em;
+  perspective: 1000px;
+  margin: 1em;
+  z-index: 1;
+  transition: z-index 0.6s;
+
+  &:hover {
+    z-index: 2;
+  }
+`;
+
+const Flashcard = styled.div`
+ position: absolute;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+  transform: rotateY(0deg);
+
+  ${FlashcardContainer}:hover & {
+    transform: rotateY(180deg);
+  }
+`;
+
+const FlashcardFront = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #e0e0e0;
+  box-shadow: 5px 5px 7px rgba(33, 33, 33, .7);
+  padding: 1em;
+  backface-visibility: hidden;
+`;
+
+const FlashcardBack = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #e0e0e0;
+  box-shadow: 5px 5px 7px rgba(33, 33, 33, .7);
+  padding: 1em;
+  backface-visibility: hidden;
+  transform: rotateY(180deg);
+`;
+
 
 const MainBody = () => {
 
   const [posts, setPosts] = useState([])
   useEffect(() => {
-    fetch("https://66c21aecf83fffcb587b2a9c.mockapi.io/questions/posts")
+    fetch("https://66c075a5ba6f27ca9a56aed0.mockapi.io/questions")
       .then(response => response.json())
       .then(data => setPosts(data))
   }, [])
@@ -84,7 +127,7 @@ const MainBody = () => {
       return;
     }
     try {
-      const response = await fetch(`https://66c21aecf83fffcb587b2a9c.mockapi.io/questions/posts/${postId}`, {
+      const response = await fetch(`https://66c075a5ba6f27ca9a56aed0.mockapi.io/questions/${postId}`, {
         method: 'DELETE',
       });
 
@@ -115,7 +158,7 @@ const MainBody = () => {
     };
 
     try {
-      const response = await fetch('https://66c21aecf83fffcb587b2a9c.mockapi.io/questions/posts', {
+      const response = await fetch('https://66c075a5ba6f27ca9a56aed0.mockapi.io/questions', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newQuestion),
@@ -127,7 +170,7 @@ const MainBody = () => {
       console.log('Post inserted successfully!');
       alert('Post inserted successfully!');
 
-      const updatedPostsResponse = await fetch("https://66c21aecf83fffcb587b2a9c.mockapi.io/questions/posts");
+      const updatedPostsResponse = await fetch("https://66c075a5ba6f27ca9a56aed0.mockapi.io/questions");
       const updatedPosts = await updatedPostsResponse.json();
 
       setPosts(updatedPosts);
@@ -142,9 +185,18 @@ const MainBody = () => {
   return (
     <MainContainer>
       <h3>Questions for the group?</h3>
-      <ul className='pt-4 gap-4 overflow-y-scroll no-scrollbar'>
+      <ul className='pt-4 gap-4 overflow-y-scroll '>
         {posts.map((post) => (
-          <Post key={post.id} post={post} onDeletePost={handleDeletePost} />
+          <FlashcardContainer key={post.id}>
+            <Flashcard>
+              <FlashcardFront>
+                <Post post={post} onDeletePost={handleDeletePost}/>
+              </FlashcardFront>
+              <FlashcardBack>
+                <Answer post={post} onDeletePost={handleDeletePost}/>
+              </FlashcardBack>
+            </Flashcard>
+          </FlashcardContainer>
         ))}
       </ul>
     </MainContainer>
