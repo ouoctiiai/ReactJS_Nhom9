@@ -80,8 +80,6 @@ export default function Post({ post, onDeletePost, userRole }) {
     
     const [likes, setLikes] = useState(post.likes ?? []);
     const [hasLiked, setHasLiked] = useState(post.likes?.includes(currentUsername) ?? false);
-    const [showUpdateCard, setShowUpdateCard] = useState(false);
-    const [showAnswerCard, setShowAnswerCard] = useState(false);
     const [data, setData] = useState(post);
     const [userLike, setUserLike]=useState(false);
 
@@ -163,7 +161,7 @@ export default function Post({ post, onDeletePost, userRole }) {
                     </svg>
                 </span>
                 <div className='flex gap-2'>
-                    <User /><h7>{data.writer}</h7>
+                    <User /><h7>{post.writer}</h7>
                 </div>
                 {(userRole === 'admin' || (userRole === 'intern' && data.writer === currentUsername)) && (
                     <span className='trash-icon'>
@@ -173,7 +171,7 @@ export default function Post({ post, onDeletePost, userRole }) {
                     </span>
                 )}
                 <hr style={{ margin: '10px', border: '0.15px solid black', opacity: '.8' }} />
-                <p>{data.question}</p>
+                <p>{post.question}</p>
                 <div className='icon-container'>
                     <span className='heart-item'>
                         <button type="button" onClick={handleLikeClick} style={{ background: 'none', border: 'none' }}>
@@ -197,7 +195,7 @@ export default function Post({ post, onDeletePost, userRole }) {
                     )}
                 </div>
                 <span className='date-text' style={{ fontSize: '12px' }}>
-                    <h7>{data.date}</h7>
+                    <h7>{post.date}</h7>
                 </span>
             </a>
         </PostContainer>
