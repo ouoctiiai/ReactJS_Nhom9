@@ -81,19 +81,19 @@ export default function Home() {
       };
   return (
     <>
-          <div >
-              <Header onSearch={handleSearch} />
-              <Navbar/>
-              <div className=" bg-[url('./image/bg.jpg')]  bg-cover bg-center">    
-                  <Routes>
-                      <Route path="/admin" element={<Admin />} /> 
-                      <Route path="filterquestion" element={<FilterQuestion questions={posts} />} />
-                      <Route path="mainbody" element={<MainBody posts={posts} searchQuery={searchQuery} />} />  
-                      <Route path="addquestion" element={<AddQuestionCard onInsertPost={handleInsertPost} />} />  
-                      </Routes>
-              </div>
-              <Footer />
-          </div>
+        <div >
+            <Header onSearch={handleSearch} />
+            <Navbar/>
+            <div className=" bg-[url('./image/bg.jpg')]  bg-cover bg-center">    
+                <Routes>
+                    <Route path="/admin" element={<Admin />} /> 
+                    <Route path="filterquestion" element={<FilterQuestion questions={posts} />} />
+                    <Route path="mainbody" element={<MainBody posts={posts} searchQuery={searchQuery} />} />  
+                    <Route path="addquestion" element={<AddQuestionCard onInsertPost={handleInsertPost} />} />  
+                    </Routes>
+            </div>
+            <Footer />
+        </div>
     </>
   )
 }

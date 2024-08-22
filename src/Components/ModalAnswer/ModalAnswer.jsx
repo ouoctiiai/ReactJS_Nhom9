@@ -23,7 +23,7 @@ function ModalAnswer({ setOpenModal, post }) {
           if (!response.ok) {
             throw new Error(`Error updating post: ${response.statusText}`);
           }
-
+          setOpenModal(false);
           console.log('Post answered successfully!');
           alert('Post answered successfully!!');
         } catch (error) {
@@ -50,7 +50,7 @@ function ModalAnswer({ setOpenModal, post }) {
         <div className="body">
         <form onSubmit={handleSave}>
         <div className="mb-3">
-            <input className="form-control" id="inputanswer" type="text" placeholder="Enter your answer" name="answer" value={formData.answer} onChange={handleChange} />
+            <input className="form-control" id="inputanswer" type="text" placeholder="Enter your answer" name="answer" value={formData.answer} onChange={handleChange}/>
           </div>
           <div className="footer">
           <button

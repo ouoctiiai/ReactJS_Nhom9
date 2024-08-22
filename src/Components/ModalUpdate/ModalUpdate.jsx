@@ -51,7 +51,7 @@ function ModalUpdate({ setOpenModal, post }) {
         <form onSubmit={handleSave}>
           <div className="mb-3">
             <label className="small mb-1" htmlFor="inputQuestion">Question: </label>
-            <input className="form-control" id="inputQuestion" type="text" placeholder="Enter your question" name="question" value={formData.question} onChange={handleChange} />
+            <input className="form-control" id="inputQuestion" type="text" placeholder="Enter your question" name="question" value={formData.question} onChange={handleChange}/>
           </div>
           <div className="mb-3">
             <label className="small mb-1" htmlFor="inputAnswer">Answer: </label>
