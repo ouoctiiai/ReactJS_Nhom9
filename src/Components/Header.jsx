@@ -1,4 +1,4 @@
-import { Search, Settings, Share, User2 } from "lucide-react";
+import { LogOut, Search, Settings, Share, User2 } from "lucide-react";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -56,15 +56,18 @@ export default function Header({ onSearch,writer }) {
             <User2 width={20} className="text-white" />
           </button>
           {showDropdown && (
-            <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg" style={{top: '70px'}}>
-              <ul className="py-1">
+          <div className="absolute right-0  w-48 bg-[#413d47] rounded-lg shadow-lg" style={{top: '70px'}}>
+              <ul className="py-1 m-0 p-0">
                 <li>
+                <div className="flex gap-2 justify-center items-center  hover:bg-slate-600">
+                  <LogOut />
                   <button
                     onClick={handleLogout}
-                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    className="block w-full font-bold text-left px-4 py-2 text-sm text-white"
                   >
                     Đăng xuất
                   </button>
+                  </div>
                 </li>
               </ul>
             </div>
