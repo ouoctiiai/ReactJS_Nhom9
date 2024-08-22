@@ -256,9 +256,9 @@ export default function MainBody({ posts = [], searchQuery }) {
       {modalOpenAS && <ModalAnswer 
       setOpenModal={setModalOpenAS}
       post={currentPost} />}
-
+    
       <h3>Questions for the group?</h3>
-      <ul className='pt-4 gap-4 overflow-y-scroll '>
+      <ul className='h-[700px] pt-4 gap-4 overflow-y-scroll '>
         {filteredPosts.map((post) => (
           <FlashcardContainer key={post.id} className={post.answer ? 'has-answer' : ''}>
             <Flashcard>
@@ -273,7 +273,7 @@ export default function MainBody({ posts = [], searchQuery }) {
         ))}
       </ul>
       <div className='flex justify-between flex-col items-center w-screen mb-2'>
-        <h2 className='text-white'>Have new question* </h2>
+        <h2 >Have new question* </h2>
         <AddQuestionCard onInsertPost={handleInsertPost} />
       </div>
     </MainContainer>
