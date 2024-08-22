@@ -27,7 +27,7 @@ export default function Home() {
         
     <>
           <div >
-              <Header onSearch={handleSearch} />
+              <Header onSearch={handleSearch} writer={user.username}/>
               <Navbar/>
               <div className="">
                   <Routes>

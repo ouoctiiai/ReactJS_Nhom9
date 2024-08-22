@@ -1,7 +1,7 @@
 import { Search, Settings, Share, User2 } from "lucide-react";
 import React, { useState } from "react";
 
-export default function Header({ onSearch }) {
+export default function Header({ onSearch,writer }) {
   const [searchQuery,setSearchQuery] = useState('');
    const handleSearch = () =>{
     if(onSearch){
@@ -40,9 +40,13 @@ export default function Header({ onSearch }) {
         <button className="rounded-full bg-[#58565a] font-bold w-8 h-8 sm:w-10 sm:h-10 flex justify-center items-center">
           <Settings width={20} className="text-white" />
         </button>
-        <button className="rounded-full bg-[#413d47] font-bold w-8 h-8 sm:w-10 sm:h-10 flex justify-center items-center">
-          <User2 width={20} className="text-white" />
-        </button>
+        <div className="flex items-center justify-center">
+          <button className="rounded-full bg-[#413d47] font-bold w-8 h-8 sm:w-10 sm:h-10 flex justify-center items-center">
+            <User2 width={20} className="text-white" ></User2>
+          </button>
+          <h4 className="ml-2 text-white"> {writer}</h4>
+        </div>
+        
       </div>
     </div>
   );

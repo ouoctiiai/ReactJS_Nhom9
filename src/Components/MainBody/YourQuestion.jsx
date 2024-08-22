@@ -3,17 +3,19 @@ import MainBody from './MainBody';
 
 const YourQuestion = ({ questions, writer }) => {
     const [yourQuestion,setYourQuestion] = useState([...questions]);
-    const [noAnswerOnly, setNoAnswerOnly] = useState(true);
+    const [noAnswerOnly, setNoAnswerOnly] = useState(false);
     const [YournoAnswerOnly, setYournoAnswerOnly] = useState([...yourQuestion]);
     useEffect(()=>{
         setYourQuestion(questions.filter(questions=> questions.writer=== writer))
+        setYournoAnswerOnly(questions.filter(questions => questions.writer === writer));
     })
     useEffect(()=>{
         let updatedPosts = [...yourQuestion];
         if (noAnswerOnly) {
             updatedPosts = updatedPosts.filter(question => !question.answer || question.answer.trim() === '');
         }
-            setYournoAnswerOnly(updatedPosts)
+       
+        setYournoAnswerOnly(updatedPosts)
     },[noAnswerOnly])
     const handleNoAnswerChange = (event) => {
         setNoAnswerOnly(event.target.checked);
