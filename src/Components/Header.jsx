@@ -1,8 +1,17 @@
 import { Search, Settings, Share, User2 } from "lucide-react";
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Header({ onSearch }) {
   const [searchQuery,setSearchQuery] = useState('');
+  const [showDropdown, setShowDropdown] = useState(false);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("user"); 
+    navigate("/"); 
+  };
+
    const handleSearch = () =>{
     if(onSearch){
       onSearch(searchQuery);
@@ -40,9 +49,26 @@ export default function Header({ onSearch }) {
         <button className="rounded-full bg-[#58565a] font-bold w-8 h-8 sm:w-10 sm:h-10 flex justify-center items-center">
           <Settings width={20} className="text-white" />
         </button>
-        <button className="rounded-full bg-[#413d47] font-bold w-8 h-8 sm:w-10 sm:h-10 flex justify-center items-center">
-          <User2 width={20} className="text-white" />
-        </button>
+        <button
+            className="rounded-full bg-[#413d47] font-bold w-8 h-8 sm:w-10 sm:h-10 flex justify-center items-center"
+            onClick={() => setShowDropdown(!showDropdown)}
+          >
+            <User2 width={20} className="text-white" />
+          </button>
+          {showDropdown && (
+            <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg" style={{top: '70px'}}>
+              <ul className="py-1">
+                <li>
+                  <button
+                    onClick={handleLogout}
+                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  >
+                    Đăng xuất
+                  </button>
+                </li>
+              </ul>
+            </div>
+          )}
       </div>
     </div>
   );
