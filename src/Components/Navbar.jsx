@@ -40,7 +40,7 @@ const Navbar = () => {
                     <Link to="/home/filterquestion" className="block no-underline  text-white px-4 py-2 hover:bg-gray-700">Filter Question</Link>
                     {(userRole === 'intern') && (
                         <>
-                        <Link to="/yourquestion" className="block no-underline  text-white px-4 py-2 hover:bg-gray-700">Your Question</Link>
+                        <Link to="/home/yourquestion" className="block no-underline  text-white px-4 py-2 hover:bg-gray-700">Your Question</Link>
                         <Link to="/home/addquestion" className="block no-underline  text-white px-4 py-2 hover:bg-gray-700">Add Question</Link>
                         </>
                     )}

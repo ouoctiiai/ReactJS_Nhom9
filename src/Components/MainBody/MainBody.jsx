@@ -196,9 +196,9 @@ export default function MainBody({ posts = [], searchQuery }) {
       {modalOpenAS && <ModalAnswer 
       setOpenModal={setModalOpenAS}
       post={currentPost} />}
-
+    
       <h3>Questions for the group?</h3>
-      <ul className='pt-4 gap-4 overflow-y-scroll'>
+      <ul className='h-[700px] pt-4 gap-4 overflow-y-scroll '>
         {filteredPosts.map((post) => (
           <FlashcardContainer key={post.id} className={post.answer ? 'has-answer' : ''}>
             <Flashcard>

@@ -7,13 +7,17 @@ import MainBody from './MainBody/MainBody'
 import FilterQuestion from './FilterQuestion'
 import Admin from './Admin/Admin'
 import AddQuestionCard from './MainBody/AddQuestionCard'
+import YourQuestion from './MainBody/YourQuestion'
 
 export default function Home() {
     const [posts, setPosts] = useState([])
     const [searchQuery, setSearchQuery] = useState('');
     const [nextId, setNextId] = useState(null);
-
+    const [user, setUser] = useState({});
     useEffect(() => {
+        const storedUser = JSON.parse(localStorage.getItem('user'));
+        setUser(storedUser); // Lấy user từ localStorage
+        
         fetch("https://66c075a5ba6f27ca9a56aed0.mockapi.io/questions")
             .then(response => response.json())
             .then(data => setPosts(data))
@@ -80,16 +84,18 @@ export default function Home() {
         }
       };
   return (
+        
     <>
         <div >
             <Header onSearch={handleSearch} />
             <Navbar/>
-            <div className=" bg-[url('./image/bg.jpg')]  bg-cover bg-center">    
+            <div className="">    
                 <Routes>
                     <Route path="/admin" element={<Admin />} /> 
                     <Route path="filterquestion" element={<FilterQuestion questions={posts} />} />
                     <Route path="mainbody" element={<MainBody posts={posts} searchQuery={searchQuery} />} />  
-                    <Route path="addquestion" element={<AddQuestionCard onInsertPost={handleInsertPost} />} />  
+                    <Route path="addquestion" element={<AddQuestionCard onInsertPost={handleInsertPost} />} /> 
+                    <Route path="yourquestion" element={<YourQuestion questions={posts} writer={user.username} />} />
                     </Routes>
             </div>
             <Footer />
