@@ -2,7 +2,7 @@ import { Search, Settings, Share, User2 } from "lucide-react";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function Header({ onSearch }) {
+export default function Header({ onSearch,writer }) {
   const [searchQuery,setSearchQuery] = useState('');
   const [showDropdown, setShowDropdown] = useState(false);
   const navigate = useNavigate();
