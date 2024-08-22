@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react'
-import { useState } from 'react'
+import React, { useEffect, useState } from 'react';
+import reactLogo from './assets/react.svg';
+import viteLogo from '/vite.svg';
 import './index.css';
-import './App.css'
+import './App.css';
 import Header from './Components/Header';
-import Footer from './Components/Footer/Foot'
+import Footer from './Components/Footer/Foot';
 import MainBody from './Components/MainBody/MainBody';
 import { Route, Routes } from 'react-router-dom';
 import Navbar from './Components/Navbar';
@@ -20,5 +21,5 @@ function App() {
           </Routes>
   )
 }
-export default App
 
+export default App;

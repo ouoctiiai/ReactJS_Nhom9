@@ -3,8 +3,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Trash2, Heart, Brush, User, MessageCircleReply } from 'lucide-react';
 import styled from 'styled-components';
 import { FaHeart } from 'react-icons/fa';
-import AnswerCard from './AnswerCard';
-import UpdateQuestionCard from './UpdateQuestionCard';
 
 const PostContainer = styled.li`
 
@@ -74,16 +72,12 @@ p {
     }
 `;
 
-export default function Post({ post, onDeletePost, userRole }) {
+export default function Post({ post, onDeletePost, userRole, onUpdatePost, onAnswerPost}) {
     const user = JSON.parse(localStorage.getItem('user'));
     const currentUsername = user ? user.username : '';
-    
     const [likes, setLikes] = useState(post.likes ?? []);
     const [hasLiked, setHasLiked] = useState(post.likes?.includes(currentUsername) ?? false);
-    const [showUpdateCard, setShowUpdateCard] = useState(false);
-    const [showAnswerCard, setShowAnswerCard] = useState(false);
     const [data, setData] = useState(post);
-    const [userLike, setUserLike]=useState(false);
 
     const handleUpdateDataQS = (question) => {
         const newData = { ...data };
@@ -99,19 +93,11 @@ export default function Post({ post, onDeletePost, userRole }) {
     }
 
     const handleUpdateClick = () => {
-        setShowUpdateCard(true);
-    };
-
-    const handleCloseUpdateCard = () => {
-        setShowUpdateCard(false);
+        onUpdatePost(post);
     };
 
     const handleAnswerClick = () => {
-        setShowAnswerCard(true);
-    };
-
-    const handleCloseAnswerCard = () => {
-        setShowAnswerCard(false);
+        onAnswerPost(post);
     };
 
     const handleLikeClick = async () => {
@@ -163,7 +149,7 @@ export default function Post({ post, onDeletePost, userRole }) {
                     </svg>
                 </span>
                 <div className='flex gap-2'>
-                    <User /><h6>{data.writer}</h6>
+                    <User /><h7>{post.writer}</h7>
                 </div>
                 {(userRole === 'admin' || (userRole === 'intern' && data.writer === currentUsername)) && (
                     <span className='trash-icon'>
@@ -173,7 +159,7 @@ export default function Post({ post, onDeletePost, userRole }) {
                     </span>
                 )}
                 <hr style={{ margin: '10px', border: '0.15px solid black', opacity: '.8' }} />
-                <p>{data.question}</p>
+                <p>{post.question}</p>
                 <div className='icon-container'>
                     <span className='heart-item'>
                         <button type="button" onClick={handleLikeClick} style={{ background: 'none', border: 'none' }}>
@@ -197,7 +183,7 @@ export default function Post({ post, onDeletePost, userRole }) {
                     )}
                 </div>
                 <span className='date-text' style={{ fontSize: '12px' }}>
-                    <h6>{data.date}</h6>
+                    <h7>{post.date}</h7>
                 </span>
             </a>
         </PostContainer>
